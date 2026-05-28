@@ -1,0 +1,8 @@
+.env
+projects/
+*.mp4
+*.mp3
+*.jpg
+*.png
+__pycache__/
+node_modules/
