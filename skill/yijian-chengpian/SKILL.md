@@ -104,23 +104,20 @@ C. 教学 — AI 自动生成画面 + 配音的教学视频
 
 仅当 Step 1.6 选择「C 教学」时执行。详见 `references/production.md`。
 
-### Step 4：模板选择（教学路线必须交互）
+### Step 4：风格选择 + 组装画面（教学路线必须交互）
 
-脚本 + 配音完成后，**必须让用户选模板**，不能跳过：
+脚本 + 配音完成后，**问 2 个问题自动推荐风格**，不要求用户说风格名：
 
 ```
-📺 选视频画面模板：
-
-A. 教程步骤  B. 概念讲解  C. 工具对比  D. 清单技巧
-E. 查看社区模板（45+）  F. 描述风格，现场生成  G. 帮我自动选
+Q1: 内容类型？ A教程 B测评 C观点 D故事
+Q2: 什么感觉？ A干净专业 B温暖亲切 C高级冷淡 D帮我推荐
 ```
 
-- A-D → 内置品牌模板，填入内容，末尾加 outro
-- E → `npx hyperframes catalog` → 用户挑 → `npx hyperframes add <name>`
-- F → 根据用户描述当场写 Hyperframes HTML
-- G → 根据内容类型自动匹配
+→ 根据回答自动匹配 9 种风格之一 → 用户确认 → Claude 写 Hyperframes HTML → 自动拼入社区组件（grain+vignette+字幕+转场+outro）→ 渲染
 
-详见 `references/production.md` Step 4（4.0-4.5）。
+默认风格：**Swiss Tech**（黑底+橙强调+无衬线，百搭安全）。
+
+详见 `references/production.md` Step 4（4.0-4.4）。
 
 ### 平台适配
 

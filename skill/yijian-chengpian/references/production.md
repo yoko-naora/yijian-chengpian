@@ -309,109 +309,84 @@ save(audio, "output/voiceover.mp3")
 
 ---
 
-### C.3 Step 4：Hyperframes 模板选择
+### C.3 Step 4：风格选择 + 组装 Hyperframes 画面
 
-#### 4.0 模板选择（必须交互）
+#### 4.0 风格推荐（必须交互）
 
+脚本 + 配音完成后，**问 2 个问题**，然后自动推荐风格：
+
+**问题 1：你的内容是什么类型？**
 ```
-📺 选视频画面模板：
-
-【内置模板 — 教学场景】
-A. 教程步骤 — Step 1→2→3 分步讲解，步骤编号+标题+说明
-B. 概念讲解 — 大标题+正文+高亮BOX，适合抽象概念
-C. 工具对比 — 左右双栏PK+VS徽章+结论，适合A vs B
-D. 清单技巧 — 编号列表逐条弹出，适合技巧合集
-
-【Hyperframes 社区 — 增强组件】
-E. 查看社区模板 — 运行 npx hyperframes catalog 浏览 45+ 组件
-
-【自定义】
-F. 描述你想要的风格，我现场生成一个新模板
-G. 帮我自动选
+A. 教程/操作演示 — 分步骤教别人做一件事
+B. 产品测评/对比 — A vs B，哪个好
+C. 观点/认知输出 — 讲一个道理或方法
+D. 故事/案例讲述 — 讲一个人或一件事的经历
 ```
 
-- A-D → 内置品牌模板，填入脚本内容，末尾追加 `outro.html`
-- E → 运行 `npx hyperframes catalog` → 用户挑选 → `npx hyperframes add <name>`
-- F → 根据用户描述当场写 Hyperframes composition HTML
-- G → 根据内容类型自动匹配
-
-#### 4.1 内置模板（5个）
-
-`templates/hyperframes/compositions/` 中的品牌模板。
-
-| 模板 | 文件 | 布局 | 适用 |
-|------|------|------|------|
-| 教程步骤 | `tutorial-step.html` | Step N + 标题 + 説明文 | 操作教学、分步演示 |
-| 概念讲解 | `explainer.html` | 标签 + 大标题 + 正文 + 強調BOX | 抽象概念、方法论 |
-| 工具对比 | `comparison.html` | 左右双栏 + VS 圆徽章 + 结论 | A vs B 对比测评 |
-| 清单技巧 | `listicle.html` | 编号列表 stagger 逐条弹出 | 技巧合集、Top N |
-| 片尾CTA | `outro.html` | Logo + 关注按钮 + URL | **所有视频末尾 3-5 秒** |
-
-#### 4.2 社区模板（Hyperframes Registry）
-
-用户运行 `npx hyperframes catalog` 可浏览安装 45+ 组件：
-
-| 类别 | 数量 | 例 |
-|------|------|-----|
-| 数据可视化 | 8 | 柱状图、美国地图、世界地图、流程图 |
-| 字幕特效 | 12 | 卡拉OK、霓虹发光、毛刺故障、矩阵解码 |
-| 社交媒体 | 6 | Instagram/TikTok/YouTube/X 关注卡片 |
-| 转场效果 | 4 | 像素化擦除、波纹燃烧、快速摇镜 |
-| 质感叠加 | 4 | 胶片颗粒、微光扫描、暗角 |
-| 品牌展示 | 1 | Logo 电影感片尾 |
-
-安装方式：`npx hyperframes add <block-name>`
-
-#### 4.3 自定义模板
-
-用户描述需求 → Claude 当场写 Hyperframes composition HTML → 用户确认 → 使用。  
-生成时遵循 `templates/hyperframes/brand-guide.md` 的品牌规范。
-
-#### 4.4 品牌规范（全模板遵守）
-
-- 字体：中文 `Noto Sans SC` / 日文 `Noto Sans JP` + `Noto Serif JP`
-- 配色：背景 `#0a0a0b` / 文字 `#f1efea` / 强调 `#FF6B35` / 绿 `#2e7d32`
-- 品牌栏：每页底部 60px「SNS Aladdin | kb.snsaladdin.com」
-- 画面：抖音 1080×1920 / 小红书 1080×1440 / X・YouTube 1920×1080
-
-#### 4.5 字幕（二选一）
-
-**方案一：Hyperframes 字幕组件（推荐）**
-`npx hyperframes add caption-pill-karaoke` 等 12 种社区字幕组件。
-字幕作为画面的一部分渲染，与画面完美同步。
-
-**方案二：FFmpeg 烧录字幕**
-渲染后手动生成 SRT → FFmpeg 烧录。灵活但多一步。
-
-```powershell
-ffmpeg -i video.mp4 -vf "subtitles=subs.srt:force_style='FontName=Noto Sans SC,FontSize=28,PrimaryColour=&H00FFFFFF,Outline=2'" -c:v libx264 -c:a copy output.mp4
+**问题 2：想要什么感觉？**
+```
+A. 干净专业 — 科技公司发布会感，简洁利落
+B. 温暖亲切 — 朋友聊天感，不冷冰冰
+C. 高级冷淡 — 杂志大片感，有距离感的审美
+D. 我不知道 / 你帮我推荐
 ```
 
-#### 4.6 配乐
+#### 4.1 风格匹配表
 
-在 Hyperframes composition 中添加 `<audio>` 元素作为背景音乐轨道：
+根据回答自动匹配：
 
-```html
-<audio src="assets/bgm.mp3" data-start="0" data-duration="60"
-       data-track-index="10" volume="0.15" loop></audio>
+| 内容 | 感觉 | → 风格名 | 配色 | 字体 | 适合 |
+|------|------|---------|------|------|------|
+| 教程 | 干净 | **Swiss Tech** | 黑底 `#0a0a0b` + 橙强调 `#FF6B35` | 无衬线 | 软件教学、AI工具 |
+| 教程 | 温暖 | **Warm Guide** | 米白底 `#faf7f2` + 暖赭 `#C7512E` | 衬线 | 生活技巧、亲子教育 |
+| 教程 | 高级 | **Swiss Grid** | 白底 + 黑 + IKB蓝 `#002FA7` | 无衬线 | 专业课程、企业培训 |
+| 测评 | 干净 | **Swiss Grid** | 白底 + 黑 + IKB蓝 | 无衬线 | 工具测评、数码产品 |
+| 测评 | 温暖 | **Warm Compare** | 奶油底 + 深棕 + 金 | 衬线 | 生活方式、美食 |
+| 测评 | 高级 | **Editorial Dark** | 深底 `#1c1c2e` + 金 `#d4a04a` | 衬线 | 高端产品、奢侈品 |
+| 观点 | — | **Editorial Dark** | 深底 + 金 + 白 | 衬线 | 商业思考、认知输出 |
+| 故事 | — | **Kraft Paper** | 牛皮纸 `#eedfc7` + 深棕 | 衬线 | 人物故事、品牌叙事 |
+| 不确定 | — | **Swiss Tech**（默认） | 黑底 + 橙 | 无衬线 | 百搭安全 |
+
+> 用户说「我不知道」→ 默认 **Swiss Tech**，解释：「黑底+橙色强调+无衬线，最百搭的组合。Apple 发布会也是这个路子。先用这个做，不满意再换。」
+
+#### 4.2 风格确认后的操作
+
+Claude 按匹配的风格写 **一个** Hyperframes composition HTML（单文件，包含所有场景段落），遵循：
+
+| 要素 | 规范 |
+|------|------|
+| 字体 | Chinese: `Noto Sans SC` / Japanese: `Noto Sans JP` + `Noto Serif JP` |
+| 配色 | 按匹配的风格表 |
+| 尺寸 | 抖音 1080×1920 / 小红书 1080×1440 / 视频号 1080×1920 / X 1920×1080 |
+| 品牌栏 | 每段底部 60px「SNS Aladdin | kb.snsaladdin.com」 |
+| 动画 | GSAP `from()` 入场，段落间淡入淡出 |
+
+#### 4.3 自动拼入社区组件
+
+写完主 composition 后，**自动安装并嵌入以下基础组件**（不需要用户选）：
+
+```bash
+npx hyperframes add grain-overlay      # 胶片质感
+npx hyperframes add vignette           # 暗角聚焦
+npx hyperframes add caption-pill-karaoke  # 卡拉OK字幕
+npx hyperframes add grid-pixelate-wipe    # 段落转场
+npx hyperframes add logo-outro            # 片尾
 ```
 
-或渲染后用 FFmpeg 混音：
+嵌入方式：
+- `grain-overlay` + `vignette` → 全局 CSS overlay
+- `caption-pill-karaoke` → 粘贴到需要字幕的段落
+- `grid-pixelate-wipe` → 段落之间切换时触发
+- `logo-outro` → 最后一个段落，**替换文字为品牌信息**（AI知識庫 / SNS Aladdin / kb.snsaladdin.com）
 
-```powershell
-ffmpeg -i video.mp4 -i bgm.mp3 -filter_complex "[1:a]volume=0.15[a1];[0:a][a1]amix=inputs=2:duration=first" -c:v copy output.mp4
-```
+#### 4.4 构建与渲染
 
-> 配乐来源：用户提供 / Hyperframes 内置 / Epidemic Sound / Artlist / Uppbeat（免版税）
+1. 写 composition HTML（单文件含全部场景）
+2. 嵌入社区组件
+3. `npm run check` → 验证
+4. `npm run render` → MP4 输出
 
-#### 4.7 构建与渲染
-
-1. 选好模板 → 填入脚本文字 → 调整 `data-duration`
-2. 加入字幕组件 + 配乐轨道
-3. 末尾追加 `outro.html`（3-5 秒 CTA）
-4. `npm run check` → 验证
-5. `npm run render` → MP4 输出
-6. 多段用 FFmpeg 拼接
+> 参考：`templates/hyperframes/brand-guide.md`（品牌规范细节）、Hyperframes 官方文档 https://hyperframes.heygen.com/introduction
 
 ---
 
