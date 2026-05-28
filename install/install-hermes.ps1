@@ -1,8 +1,9 @@
 # Install yijian-chengpian skill for Hermes
 param($Target = "$env:USERPROFILE\.hermes\skills\yijian-chengpian")
 
-$Source = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$SkillSource = Join-Path $Source "skill\yijian-chengpian"
+$ScriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path $MyInvocation.MyCommand.Path -Parent }
+$RepoRoot = Split-Path -Parent $ScriptDir
+$SkillSource = Join-Path $RepoRoot "skill\yijian-chengpian"
 
 Write-Host "Installing yijian-chengpian to $Target..."
 
