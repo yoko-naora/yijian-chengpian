@@ -95,8 +95,8 @@ C. 教学 — AI 自动生成画面 + 配音的教学视频
 | 分支 | 调用的 Skill | 成品 | 跳转 |
 |------|-------------|------|------|
 | **A 图文** | dbs-content → guizang-social-card-skill | 小红书图文 / 公众号 21:9+1:1 | ↓ 路径 A |
-| **B 口播** | video-use → guizang-social-card-skill | 口播短视频 + 封面 | ↓ 路径 B |
-| **C 教学** | ElevenLabs → Hyperframes → FFmpeg | AI 教学视频 | ↓ 路径 C |
+| **B 口播** | video-use（字幕+配乐+剪辑）→ guizang-social-card-skill（封面） | 口播短视频 + 封面 | ↓ 路径 B |
+| **C 教学** | ElevenLabs → Hyperframes → FFmpeg → guizang-social-card-skill（封面） | AI 教学视频 + 封面 | ↓ 路径 C |
 
 用户如果已经说了形式（如「做一期小红书图文」），自动跳过此步直接进入对应路径。
 
@@ -156,12 +156,32 @@ C. 教学 — AI 自动生成画面 + 配音的教学视频
   要求：
   - 去掉空白和口误
   - 按 Step 1.5 的钩子优化开头
-  - 加字幕（居中大字，Noto Sans SC）
   - 节奏：抖音版剪快 20%
   - 时长：{根据目标平台建议}
 ```
 
-### B.2 生成封面（guizang-social-card-skill）
+输出：剪辑后的视频（无字幕、无配乐）
+
+### B.2 字幕 + 配乐
+
+```
+调用 video-use：
+  「给这段视频加字幕和背景音乐」
+  视频：{B.1 的输出}
+  字幕：
+  - 自动转写，居中大字
+  - 字体 Noto Sans SC（中文）/ Noto Sans JP（日文）
+  - 关键字高亮（橙色 #FF6B35）
+  配乐：
+  - 默认：轻快电子 / Lo-fi（适合教学/知识类口播）
+  - 用户指定：{让用户选风格}
+  - 音量：-18dB，不盖过人声
+  - 片尾 2 秒 fade out
+```
+
+> 配乐来源：video-use 内置曲库 / 用户提供 / 推荐 Epidemic Sound / Artlist 等免版税平台
+
+### B.3 生成封面（guizang-social-card-skill）
 
 ```
 调用 guizang-social-card-skill：
@@ -171,9 +191,9 @@ C. 教学 — AI 自动生成画面 + 配音的教学视频
   输出：.poster.xhs（1080×1440）或 .poster.square（1080×1080）
 ```
 
-### B.3 输出
+### B.4 输出
 
-→ 剪辑后的 MP4 + 封面 PNG  
+→ 剪辑后的 MP4（含字幕+配乐）+ 封面 PNG  
 → 跳转 Step 6 多平台分发
 
 ---
@@ -318,13 +338,44 @@ G. 帮我自动选
 - 品牌栏：每页底部 60px「SNS Aladdin | kb.snsaladdin.com」
 - 画面：抖音 1080×1920 / 小红书 1080×1440 / X・YouTube 1920×1080
 
-#### 4.5 构建与渲染
+#### 4.5 字幕（二选一）
+
+**方案一：Hyperframes 字幕组件（推荐）**
+`npx hyperframes add caption-pill-karaoke` 等 12 种社区字幕组件。
+字幕作为画面的一部分渲染，与画面完美同步。
+
+**方案二：FFmpeg 烧录字幕**
+渲染后手动生成 SRT → FFmpeg 烧录。灵活但多一步。
+
+```powershell
+ffmpeg -i video.mp4 -vf "subtitles=subs.srt:force_style='FontName=Noto Sans SC,FontSize=28,PrimaryColour=&H00FFFFFF,Outline=2'" -c:v libx264 -c:a copy output.mp4
+```
+
+#### 4.6 配乐
+
+在 Hyperframes composition 中添加 `<audio>` 元素作为背景音乐轨道：
+
+```html
+<audio src="assets/bgm.mp3" data-start="0" data-duration="60"
+       data-track-index="10" volume="0.15" loop></audio>
+```
+
+或渲染后用 FFmpeg 混音：
+
+```powershell
+ffmpeg -i video.mp4 -i bgm.mp3 -filter_complex "[1:a]volume=0.15[a1];[0:a][a1]amix=inputs=2:duration=first" -c:v copy output.mp4
+```
+
+> 配乐来源：用户提供 / Hyperframes 内置 / Epidemic Sound / Artlist / Uppbeat（免版税）
+
+#### 4.7 构建与渲染
 
 1. 选好模板 → 填入脚本文字 → 调整 `data-duration`
-2. 末尾追加 `outro.html`（3-5 秒 CTA）
-3. `npm run check` → 验证
-4. `npm run render` → MP4 输出
-5. 多段用 FFmpeg 拼接
+2. 加入字幕组件 + 配乐轨道
+3. 末尾追加 `outro.html`（3-5 秒 CTA）
+4. `npm run check` → 验证
+5. `npm run render` → MP4 输出
+6. 多段用 FFmpeg 拼接
 
 ---
 
@@ -343,6 +394,23 @@ ffmpeg -i video_render.mp4 -i voiceover.mp3 `
 | 编码 | H.264, 30fps |
 | 音频 | AAC 128kbps |
 | 输出 | `projects/YYYY-MM-DD/` |
+
+### C.5 生成封面（guizang-social-card-skill）
+
+导出视频后，生成各平台封面图：
+
+```
+调用 guizang-social-card-skill：
+  「给这条教学视频做封面」
+  标题：{Step 1.5 优化后的标题 / 脚本大标题}
+  视觉：{从视频中截取代表画面 或 AI 生成}
+  输出：
+  - .poster.xhs（1080×1440，小红书封面）
+  - .poster.square（1080×1080，X/B站/YouTube 封面）
+  风格：瑞士国际主义 / 电子杂志风
+```
+
+> 教学视频的封面尤其重要——它是用户在小红书/X/YouTube 上看到的唯一东西。标题 + 一个强烈的视觉元素 + 品牌色。
 
 ---
 
@@ -368,8 +436,8 @@ ffmpeg -i video_render.mp4 -i voiceover.mp3 `
 | 路径 | 产出 | 分发方式 |
 |------|------|---------|
 | A 图文 | PNG 图片集 | social-media-auto-publish（图文模式） |
-| B 口播 | MP4 + PNG 封面 | social-media-auto-publish（视频模式） |
-| C 教学 | MP4 视频 | social-media-auto-publish（视频模式） |
+| B 口播 | MP4（含字幕+配乐） + PNG 封面 | social-media-auto-publish（视频模式） |
+| C 教学 | MP4 视频 + PNG 封面 | social-media-auto-publish（视频模式） |
 
 ### 支持平台
 

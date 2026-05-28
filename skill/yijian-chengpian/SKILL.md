@@ -49,10 +49,10 @@ Test-Path "$env:USERPROFILE\Projects\yijian-chengpian"
 完整流水线，详见 `references/production.md`：
 
 ```
-Step 1     Step 1.5   Step 1.6        ─────────── 三条生产路线 ───────────     Step 6
-输入选题 → 内容质检 → 内容类型分支 ──┬→ 图文 → 文案扩写 + 社交卡片 → 分发
-                                    ├→ 口播 → video-use 剪辑 + 封面 → 分发
-                                    └→ 教学 → 脚本→配音→模板→导出 → 分发
+Step 1     Step 1.5   Step 1.6        ─────────── 三条生产路线 ────────────         Step 6
+输入选题 → 内容质检 → 内容类型分支 ─┬→ A 图文 → 文案+卡片 ──────────────→ 分发
+                                    ├→ B 口播 → 剪辑→字幕+配乐→封面 ──→ 分发
+                                    └→ C 教学 → 脚本→配音→模板→字幕+配乐→导出→封面 → 分发
 ```
 
 ### Step 1.6：内容类型分支（必须交互，不能跳过）
@@ -69,9 +69,9 @@ C. 教学 — AI 自动生成画面 + 配音的教学视频
 
 | 分支 | 生产工具 | 成品 | 跳转 |
 |------|---------|------|------|
-| **A 图文** | dbs-content 扩写 → guizang-social-card-skill 做卡片 | 小红书轮播图 / 公众号 21:9+1:1 | → `references/production.md` 路径A |
-| **B 口播** | video-use 剪辑 → guizang-social-card-skill 做封面 | 口播短视频 | → `references/production.md` 路径B |
-| **C 教学** | Step 2-5（脚本→ElevenLabs→Hyperframes→导出） | AI教学视频 | → 下方 Step 2 继续 |
+| **A 图文** | dbs-content 扩写 → guizang-social-card-skill 做卡片 | 小红书轮播图 / 公众号封面 | → 路径A |
+| **B 口播** | video-use（剪辑+字幕+配乐）→ guizang-social-card-skill（封面） | 口播短视频 + 封面 | → 路径B |
+| **C 教学** | ElevenLabs配音 → Hyperframes（画面+字幕+配乐）→ FFmpeg导出 → guizang-social-card-skill（封面） | AI教学视频 + 封面 | → 路径C |
 
 用户也可能直接指定：
 - 「做一期小红书图文」→ 自动走路径 A
