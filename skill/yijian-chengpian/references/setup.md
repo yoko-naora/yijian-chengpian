@@ -16,6 +16,10 @@
 | Node.js | `node --version` | ≥ 22 | `winget install OpenJS.NodeJS.LTS` |
 | Python | `python --version` | ≥ 3.10 | `winget install Python.Python.3.12` |
 | Git | `git --version` | 任意 | `winget install Git.Git` |
+| Hyperframes | `npx hyperframes --version` | 任意 | `npm install -g hyperframes` |
+| Chrome Headless | `npx hyperframes browser path` | — | `npx hyperframes browser ensure` |
+
+> Chrome Headless Shell 是 Hyperframes 渲染 MP4 的依赖（~101MB）。渲染前必须下载一次，之后缓存复用。
 
 ### Winget 不可用时的备用方案
 
@@ -62,6 +66,9 @@ cd <工作区路径>
 npx hyperframes init hyperframes-templates
 cd hyperframes-templates
 npx hyperframes skills --claude
+
+# 下载渲染所需的 Chrome Headless Shell（~101MB，一次性）
+npx hyperframes browser ensure
 ```
 
 如果 `npx hyperframes` 报 "command not found"：

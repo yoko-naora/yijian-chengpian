@@ -9,7 +9,9 @@ $checks = @(
     @{Name="node"; Cmd="node"; Args="--version"; MinVer="22"},
     @{Name="python"; Cmd="python"; Args="--version"; MinVer="3.10"},
     @{Name="git"; Cmd="git"; Args="--version"; MinVer=""},
-    @{Name="yt-dlp"; Cmd="yt-dlp"; Args="--version"; MinVer=""}
+    @{Name="yt-dlp"; Cmd="yt-dlp"; Args="--version"; MinVer=""},
+    @{Name="hyperframes"; Cmd="npx"; Args="hyperframes --version"; MinVer=""},
+    @{Name="chrome-headless"; Cmd="npx"; Args="hyperframes browser path"; MinVer=""}
 )
 
 foreach ($c in $checks) {
