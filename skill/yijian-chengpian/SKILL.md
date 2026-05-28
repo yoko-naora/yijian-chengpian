@@ -49,13 +49,31 @@ Test-Path "$env:USERPROFILE\Projects\yijian-chengpian"
 6 步完整流水线，详见 `references/production.md`：
 
 ```
-Step 1        Step 1.5        Step 2        Step 3-5        Step 6
-输入选题  →   内容质检    →   AI扩写脚本  →  配音+模板+导出  →  多平台分发
-               ├ dbs-content (选题诊断)
-               ├ dbs-hook (钩子优化)
-               ├ dbs-xhs-title (标题优化)
-               └ 平台风格适配 (抖音/小红书/X)
+Step 1        Step 1.5        Step 2        Step 3        Step 4           Step 5-6
+输入选题  →   内容质检    →   AI扩写脚本  →  ElevenLabs  →  模板选择+渲染  →  导出+分发
+               ├ dbs-content                   配音          ├ 内置5模板
+               ├ dbs-hook                                   ├ 社区45+组件
+               ├ dbs-xhs-title                              └ 现场生成
+               └ 平台风格适配
 ```
+
+### Step 4：模板选择（必须交互）
+
+脚本 + 配音完成后，**必须让用户选模板**，不能跳过：
+
+```
+📺 选视频画面模板：
+
+A. 教程步骤  B. 概念讲解  C. 工具对比  D. 清单技巧
+E. 查看社区模板（45+）  F. 描述风格，现场生成  G. 帮我自动选
+```
+
+- A-D → 内置品牌模板，填入内容，末尾加 outro
+- E → `npx hyperframes catalog` → 用户挑 → `npx hyperframes add <name>`
+- F → 根据用户描述当场写 Hyperframes HTML
+- G → 根据内容类型自动匹配
+
+详见 `references/production.md` Step 4（4.0-4.5）。
 
 ### Step 1.5 质检说明
 

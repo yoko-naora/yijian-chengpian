@@ -183,36 +183,81 @@ save(audio, "output/voiceover.mp3")
 
 ## Step 4：Hyperframes 套模板
 
-### 模板選択
+### 4.0 模板选择（必须交互，不让用户盲选）
 
-`templates/hyperframes/compositions/` に4種のベーステンプレートがあり、適応して使用する。
+脚本完成后，**必须向用户展示模板选择菜单**。用户选完再继续。
 
-| 内容类型 | 模板文件 | 场景 |
-|---------|---------|------|
-| 教程/步骤 | `tutorial-step.html` | 软件操作教学（Step N + 标题 + 説明） |
-| 概念讲解 | `explainer.html` | 抽象概念、方法论（标签 + 大标题 + 本文 + 強調BOX） |
-| 工具对比 | `comparison.html` | A vs B 对比（左右カラム + VSバッジ + 結論） |
-| 清单/技巧 | `listicle.html` | 技巧合集（番号付きリスト + スタッガー表示） |
+```
+📺 选视频画面模板：
 
-### アウトロ
+【内置模板 — 教学场景】
+A. 教程步骤 — Step 1→2→3 分步讲解，步骤编号+标题+说明
+B. 概念讲解 — 大标题+正文+高亮BOX，适合抽象概念
+C. 工具对比 — 左右双栏PK+VS徽章+结论，适合A vs B
+D. 清单技巧 — 编号列表逐条弹出，适合技巧合集
 
-全動画の最後に `outro.html` を3-5秒付与。Logo + CTAボタン + URL。
+【Hyperframes 社区 — 增强组件】
+E. 查看社区模板 — 运行 npx hyperframes catalog 浏览 45+ 组件
+   （字幕特效 / 图表动画 / 转场效果 / 社交媒体卡片...）
 
-### ブランド仕様
+【自定义】
+F. 描述你想要的风格，我现场生成一个新模板
+G. 帮我自动选
+```
 
-全テンプレート共通のデザインシステムは `templates/hyperframes/brand-guide.md` を参照。
+根据用户选择：
+- 选 A-D → 使用内置模板，填入脚本内容，末尾追加 `outro.html`
+- 选 E → 运行 `npx hyperframes catalog`，让用户挑选，然后 `npx hyperframes add <name>` 安装
+- 选 F → 根据用户描述，当场写一个新的 Hyperframes composition HTML
+- 选 G → 根据内容类型自动匹配最合适的模板
+
+### 4.1 内置模板（5个）
+
+`templates/hyperframes/compositions/` 中的品牌模板，对齐 kb.snsaladdin.com 设计规范。
+
+| 模板 | 文件 | 布局 | 适用 |
+|------|------|------|------|
+| 教程步骤 | `tutorial-step.html` | Step N + 标题 + 説明文 | 操作教学、分步演示 |
+| 概念讲解 | `explainer.html` | 标签 + 大标题 + 正文 + 強調BOX | 抽象概念、方法论 |
+| 工具对比 | `comparison.html` | 左右双栏 + VS 圆徽章 + 结论 | A vs B 对比测评 |
+| 清单技巧 | `listicle.html` | 编号列表 stagger 逐条弹出 | 技巧合集、Top N |
+| 片尾CTA | `outro.html` | Logo + 关注按钮 + URL | **所有视频末尾 3-5 秒** |
+
+### 4.2 社区模板（Hyperframes Registry）
+
+用户运行 `npx hyperframes catalog` 可浏览安装 45+ 组件：
+
+| 类别 | 数量 | 例 |
+|------|------|-----|
+| 数据可视化 | 8 | 柱状图、美国地图、世界地图、流程图 |
+| 字幕特效 | 12 | 卡拉OK、霓虹发光、毛刺故障、矩阵解码、粒子爆裂 |
+| 社交媒体 | 6 | Instagram/TikTok/YouTube/X 关注卡片 |
+| 转场效果 | 4 | 像素化擦除、波纹燃烧、快速摇镜、光圈虹膜 |
+| 质感叠加 | 4 | 胶片颗粒、微光扫描、暗角、纹理遮罩 |
+| 品牌展示 | 1 | Logo 电影感片尾 |
+
+安装方式：`npx hyperframes add <block-name>`，安装后可直接嵌入视频。
+
+### 4.3 自定义模板（Claude 现场生成）
+
+用户描述需求 → Claude 当场写 Hyperframes composition HTML → 用户确认 → 使用。
+
+生成时遵循 `templates/hyperframes/brand-guide.md` 的品牌规范。
+
+### 4.4 ブランド仕様（全模板遵守）
 
 - フォント：中国語 `Noto Sans SC` / 日本語 `Noto Sans JP` + `Noto Serif JP`
 - 配色：背景 `#0a0a0b` / 文字 `#f1efea` / アクセント `#FF6B35` / グリーン `#2e7d32`
 - ブランドバー：全画面下部 60px に「SNS Aladdin | kb.snsaladdin.com」
 - 画面サイズ：抖音 1080×1920 / 小紅書 1080×1440 / X・YouTube 1920×1080
 
-### テンプレート使用手順
+### 4.5 构建与渲染
 
-1. 内容タイプに合うテンプレートを選ぶ
-2. テキスト・色・サイズを作成する動画に合わせて置換
-3. スクリプトのセクションに合わせて `data-duration` を調整
-4. `npm run check` で検証 → `npm run render` で MP4 出力
+1. 选好模板 → 填入脚本文字 → 调整 `data-duration`
+2. 末尾追加 `outro.html`（3-5 秒 CTA）
+3. `npm run check` → 検証
+4. `npm run render` → MP4 出力
+5. 複数セグメントを FFmpeg で結合
 
 ---
 
