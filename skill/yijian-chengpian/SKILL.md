@@ -46,18 +46,44 @@ Test-Path "$env:USERPROFILE\Projects\yijian-chengpian"
 
 ## 模式二：日常生产
 
-6 步完整流水线，详见 `references/production.md`：
+完整流水线，详见 `references/production.md`：
 
 ```
-Step 1        Step 1.5        Step 2        Step 3        Step 4           Step 5-6
-输入选题  →   内容质检    →   AI扩写脚本  →  ElevenLabs  →  模板选择+渲染  →  导出+分发
-               ├ dbs-content                   配音          ├ 内置5模板
-               ├ dbs-hook                                   ├ 社区45+组件
-               ├ dbs-xhs-title                              └ 现场生成
-               └ 平台风格适配
+Step 1     Step 1.5   Step 1.6        ─────────── 三条生产路线 ───────────     Step 6
+输入选题 → 内容质检 → 内容类型分支 ──┬→ 图文 → 文案扩写 + 社交卡片 → 分发
+                                    ├→ 口播 → video-use 剪辑 + 封面 → 分发
+                                    └→ 教学 → 脚本→配音→模板→导出 → 分发
 ```
 
-### Step 4：模板选择（必须交互）
+### Step 1.6：内容类型分支（必须交互，不能跳过）
+
+质检通过后，**必须让用户选择内容类型**，决定走哪条生产路线：
+
+```
+📺 这条内容做什么形式？
+
+A. 图文 — 小红书图文 / 公众号封面（不用拍视频）
+B. 口播 — 对着镜头讲，需要 video-use 剪辑
+C. 教学 — AI 自动生成画面 + 配音的教学视频
+```
+
+| 分支 | 生产工具 | 成品 | 跳转 |
+|------|---------|------|------|
+| **A 图文** | dbs-content 扩写 → guizang-social-card-skill 做卡片 | 小红书轮播图 / 公众号 21:9+1:1 | → `references/production.md` 路径A |
+| **B 口播** | video-use 剪辑 → guizang-social-card-skill 做封面 | 口播短视频 | → `references/production.md` 路径B |
+| **C 教学** | Step 2-5（脚本→ElevenLabs→Hyperframes→导出） | AI教学视频 | → 下方 Step 2 继续 |
+
+用户也可能直接指定：
+- 「做一期小红书图文」→ 自动走路径 A
+- 「录个口播讲这个话题」→ 自动走路径 B
+- 「做一个教学视频」→ 自动走路径 C
+- 没说 → 弹出 A/B/C 选择
+
+### Step 2-5：教学路线（路径 C）
+
+仅当 Step 1.6 选择「C 教学」时执行。详见 `references/production.md`。
+
+### Step 4：模板选择（教学路线必须交互）
 
 脚本 + 配音完成后，**必须让用户选模板**，不能跳过：
 
