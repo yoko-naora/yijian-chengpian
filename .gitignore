@@ -6,3 +6,4 @@ projects/
 *.png
 __pycache__/
 node_modules/
+hyperframes-templates/

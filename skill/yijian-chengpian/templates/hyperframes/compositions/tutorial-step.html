@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --text: #f1efea;
+    --accent: #FF6B35;
+    --green: #2e7d32;
+    --muted: rgba(241,239,234,0.6);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 1080px; height: 1920px; overflow: hidden;
+    background: var(--bg);
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+  .clip { position: absolute; opacity: 0; }
+  .brand-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+    background: rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    font-size: 14px; color: var(--muted);
+  }
+  .step-number {
+    font-size: 120px; font-weight: 600; color: var(--accent);
+    line-height: 1;
+  }
+  .step-title {
+    font-size: 56px; font-weight: 600; color: var(--text);
+    margin-top: 16px; line-height: 1.3;
+  }
+  .step-body {
+    font-size: 32px; font-weight: 400; color: var(--muted);
+    margin-top: 24px; line-height: 1.6; max-width: 880px;
+  }
+  .step-badge {
+    display: inline-block; font-size: 22px; font-weight: 600;
+    color: #fff; background: var(--green);
+    padding: 6px 20px; border-radius: 20px;
+  }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="tutorial-step" data-start="0" data-duration="6"
+     data-width="1080" data-height="1920">
+
+  <!-- Step badge -->
+  <div id="badge" class="clip" data-start="0" data-duration="6" data-track-index="1"
+       style="top:120px; left:80px;">
+    <span class="step-badge">Step 1</span>
+  </div>
+
+  <!-- Step number -->
+  <div id="number" class="clip" data-start="0.3" data-duration="5.7" data-track-index="2"
+       style="top:200px; left:80px;">
+    <div class="step-number">01</div>
+  </div>
+
+  <!-- Step title -->
+  <div id="title" class="clip" data-start="0.6" data-duration="5.4" data-track-index="3"
+       style="top:360px; left:80px; width:880px;">
+    <div class="step-title">打开浏览器，访问<br>ChatGPT 官网</div>
+  </div>
+
+  <!-- Step description -->
+  <div id="body" class="clip" data-start="1.2" data-duration="4.8" data-track-index="4"
+       style="top:560px; left:80px; width:880px;">
+    <div class="step-body">在地址栏输入 chat.openai.com，<br>点击右上角的 Sign up 按钮开始注册</div>
+  </div>
+
+  <!-- Brand bar -->
+  <div id="brand" class="clip" data-start="0" data-duration="6" data-track-index="5"
+       style="bottom:0; left:0; width:1080px;">
+    <div class="brand-bar">
+      <span>SNS Aladdin</span>
+      <span>kb.snsaladdin.com</span>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  tl.from("#badge",  { opacity: 0, y: -20, duration: 0.5 }, 0);
+  tl.from("#number", { opacity: 0, x: -40, duration: 0.6 }, 0.3);
+  tl.from("#title",  { opacity: 0, y: 30,  duration: 0.6 }, 0.6);
+  tl.from("#body",   { opacity: 0, y: 20,  duration: 0.6 }, 1.2);
+  tl.from("#brand",  { opacity: 0, duration: 0.3 }, 0);
+  window.__timelines["tutorial-step"] = tl;
+</script>
+</body>
+</html>

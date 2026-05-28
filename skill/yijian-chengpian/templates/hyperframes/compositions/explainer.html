@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --text: #f1efea;
+    --accent: #FF6B35;
+    --muted: rgba(241,239,234,0.6);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 1080px; height: 1920px; overflow: hidden;
+    background: var(--bg);
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+  .clip { position: absolute; opacity: 0; }
+  .brand-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+    background: rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    font-size: 14px; color: var(--muted);
+  }
+  .section-label {
+    font-size: 22px; font-weight: 600; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 4px;
+  }
+  .headline {
+    font-size: 64px; font-weight: 600; color: var(--text);
+    line-height: 1.2;
+  }
+  .body-text {
+    font-size: 30px; font-weight: 400; color: var(--muted);
+    line-height: 1.7;
+  }
+  .highlight-box {
+    background: rgba(255,107,53,0.12);
+    border-left: 4px solid var(--accent);
+    padding: 24px 32px;
+    font-size: 26px; color: var(--text);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="explainer" data-start="0" data-duration="8"
+     data-width="1080" data-height="1920">
+
+  <!-- Section label -->
+  <div id="label" class="clip" data-start="0" data-duration="8" data-track-index="1"
+       style="top:120px; left:80px;">
+    <div class="section-label">核心概念</div>
+  </div>
+
+  <!-- Headline -->
+  <div id="headline" class="clip" data-start="0.4" data-duration="7.6" data-track-index="2"
+       style="top:190px; left:80px; width:880px;">
+    <div class="headline">什么是<br>Prompt Engineering？</div>
+  </div>
+
+  <!-- Divider line -->
+  <div id="divider" class="clip" data-start="0.8" data-duration="7.2" data-track-index="3"
+       style="top:400px; left:80px; width:120px; height:3px; background:var(--accent);">
+  </div>
+
+  <!-- Body -->
+  <div id="body" class="clip" data-start="1.2" data-duration="6.8" data-track-index="4"
+       style="top:450px; left:80px; width:880px;">
+    <div class="body-text">提示词工程是与AI高效沟通的核心技能。<br>通过精心设计的指令，让AI输出更精准、<br>更有用的结果。</div>
+  </div>
+
+  <!-- Highlight box -->
+  <div id="highlight" class="clip" data-start="2.0" data-duration="6.0" data-track-index="5"
+       style="top:700px; left:80px; width:880px;">
+    <div class="highlight-box">好的提示词 = 明确角色 + 具体任务 + 输出格式</div>
+  </div>
+
+  <!-- Brand bar -->
+  <div id="brand" class="clip" data-start="0" data-duration="8" data-track-index="6"
+       style="bottom:0; left:0; width:1080px;">
+    <div class="brand-bar">
+      <span>SNS Aladdin</span>
+      <span>kb.snsaladdin.com</span>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  tl.from("#label",     { opacity: 0, y: -15, duration: 0.4 }, 0);
+  tl.from("#headline",  { opacity: 0, y: 30,  duration: 0.7 }, 0.4);
+  tl.from("#divider",   { opacity: 0, scaleX: 0, duration: 0.5, transformOrigin: "left" }, 0.8);
+  tl.from("#body",      { opacity: 0, y: 20,  duration: 0.6 }, 1.2);
+  tl.from("#highlight", { opacity: 0, x: 30,  duration: 0.5 }, 2.0);
+  tl.from("#brand",     { opacity: 0, duration: 0.3 }, 0);
+  window.__timelines["explainer"] = tl;
+</script>
+</body>
+</html>

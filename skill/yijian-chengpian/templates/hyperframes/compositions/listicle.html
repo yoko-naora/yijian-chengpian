@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --text: #f1efea;
+    --accent: #FF6B35;
+    --muted: rgba(241,239,234,0.6);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 1080px; height: 1920px; overflow: hidden;
+    background: var(--bg);
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+  .clip { position: absolute; opacity: 0; }
+  .brand-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+    background: rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    font-size: 14px; color: var(--muted);
+  }
+  .list-item {
+    display: flex; align-items: flex-start; gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(241,239,234,0.08);
+  }
+  .list-num {
+    font-size: 36px; font-weight: 600; color: var(--accent);
+    min-width: 64px; text-align: right;
+  }
+  .list-content {
+    flex: 1;
+  }
+  .list-label {
+    font-size: 32px; font-weight: 600; color: var(--text);
+    line-height: 1.3;
+  }
+  .list-desc {
+    font-size: 22px; color: var(--muted);
+    margin-top: 6px; line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="listicle" data-start="0" data-duration="10"
+     data-width="1080" data-height="1920">
+
+  <!-- Headline -->
+  <div id="headline" class="clip" data-start="0" data-duration="10" data-track-index="1"
+       style="top:80px; left:80px; width:920px;">
+    <div style="font-size:22px; font-weight:600; color:#FF6B35; letter-spacing:4px; text-transform:uppercase;">
+      5个技巧
+    </div>
+    <div style="font-size:52px; font-weight:600; color:#f1efea; line-height:1.2; margin-top:8px;">
+      让你的AI输出<br>质量翻倍
+    </div>
+  </div>
+
+  <!-- List items -->
+  <div id="items" class="clip" data-start="0.6" data-duration="9.4" data-track-index="2"
+       style="top:340px; left:80px; width:920px;">
+
+    <div class="list-item" id="item1">
+      <div class="list-num">01</div>
+      <div class="list-content">
+        <div class="list-label">明确角色设定</div>
+        <div class="list-desc">告诉AI「你是一个资深SEO专家」比直接提问效果好3倍</div>
+      </div>
+    </div>
+
+    <div class="list-item" id="item2" style="opacity:0;">
+      <div class="list-num">02</div>
+      <div class="list-content">
+        <div class="list-label">提供具体示例</div>
+        <div class="list-desc">给出1-2个期望输出的例子，AI能更准确理解你的需求</div>
+      </div>
+    </div>
+
+    <div class="list-item" id="item3" style="opacity:0;">
+      <div class="list-num">03</div>
+      <div class="list-content">
+        <div class="list-label">设定输出格式</div>
+        <div class="list-desc">指定JSON/Markdown/表格等格式，减少后续处理时间</div>
+      </div>
+    </div>
+
+    <div class="list-item" id="item4" style="opacity:0;">
+      <div class="list-num">04</div>
+      <div class="list-content">
+        <div class="list-label">分步拆解任务</div>
+        <div class="list-desc">复杂任务拆成多轮对话，每轮只处理一个子问题</div>
+      </div>
+    </div>
+
+    <div class="list-item" id="item5" style="opacity:0; border-bottom:none;">
+      <div class="list-num">05</div>
+      <div class="list-content">
+        <div class="list-label">迭代优化提示词</div>
+        <div class="list-desc">把好的提示词存下来，持续优化，形成自己的提示词库</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Brand bar -->
+  <div id="brand" class="clip" data-start="0" data-duration="10" data-track-index="3"
+       style="bottom:0; left:0; width:1080px;">
+    <div class="brand-bar">
+      <span>SNS Aladdin</span>
+      <span>kb.snsaladdin.com</span>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  tl.from("#headline", { opacity: 0, y: -20, duration: 0.4 }, 0);
+  // Stagger items
+  ["#item1","#item2","#item3","#item4","#item5"].forEach((id, i) => {
+    tl.to(id, { opacity: 1, duration: 0.3 }, 0.6 + i * 1.2);
+    tl.from(id, { x: -30, duration: 0.5 }, 0.6 + i * 1.2);
+  });
+  tl.from("#brand", { opacity: 0, duration: 0.3 }, 0);
+  window.__timelines["listicle"] = tl;
+</script>
+</body>
+</html>

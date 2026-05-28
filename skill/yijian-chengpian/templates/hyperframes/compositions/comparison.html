@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --text: #f1efea;
+    --accent: #FF6B35;
+    --green: #2e7d32;
+    --muted: rgba(241,239,234,0.6);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 1080px; height: 1920px; overflow: hidden;
+    background: var(--bg);
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+  .clip { position: absolute; opacity: 0; }
+  .brand-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+    background: rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    font-size: 14px; color: var(--muted);
+  }
+  .col { width: 420px; }
+  .col-label {
+    font-size: 22px; font-weight: 600; letter-spacing: 3px;
+  }
+  .col-title {
+    font-size: 40px; font-weight: 600; line-height: 1.3;
+    margin-top: 16px;
+  }
+  .col-item {
+    font-size: 26px; line-height: 2.0; color: var(--muted);
+  }
+  .vs-badge {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 600; color: #fff;
+  }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="comparison" data-start="0" data-duration="8"
+     data-width="1080" data-height="1920">
+
+  <!-- Headline -->
+  <div id="headline" class="clip" data-start="0" data-duration="8" data-track-index="1"
+       style="top:100px; left:80px; width:920px;">
+    <div style="font-size:52px; font-weight:600; color:#f1efea; line-height:1.2;">
+      ChatGPT vs Claude<br><span style="color:#FF6B35; font-size:36px;">どっちを選ぶ？</span>
+    </div>
+  </div>
+
+  <!-- Left column: ChatGPT -->
+  <div id="col-a" class="clip col" data-start="0.6" data-duration="7.4" data-track-index="2"
+       style="top:380px; left:60px;">
+    <div class="col-label" style="color:#2e7d32;">ChatGPT</div>
+    <div class="col-title" style="color:#f1efea;">汎用性の王者</div>
+    <div style="margin-top:20px;">
+      <div class="col-item">GPT-4o マルチモーダル</div>
+      <div class="col-item">画像生成 + 認識</div>
+      <div class="col-item">プラグインエコシステム</div>
+    </div>
+  </div>
+
+  <!-- VS badge -->
+  <div id="vs" class="clip" data-start="1.2" data-duration="6.8" data-track-index="3">
+    <div class="vs-badge">VS</div>
+  </div>
+
+  <!-- Right column: Claude -->
+  <div id="col-b" class="clip col" data-start="0.9" data-duration="7.1" data-track-index="4"
+       style="top:380px; right:60px;">
+    <div class="col-label" style="color:#FF6B35;">Claude</div>
+    <div class="col-title" style="color:#f1efea;">深さの達人</div>
+    <div style="margin-top:20px;">
+      <div class="col-item">200K コンテキスト</div>
+      <div class="col-item">コード生成 トップ級</div>
+      <div class="col-item">安全設計 徹底遵守</div>
+    </div>
+  </div>
+
+  <!-- Bottom verdict -->
+  <div id="verdict" class="clip" data-start="2.5" data-duration="5.5" data-track-index="5"
+       style="bottom:140px; left:80px; width:920px;">
+    <div style="font-size:28px; color:rgba(241,239,234,0.6); line-height:1.6;">
+      汎用タスクは <span style="color:#2e7d32; font-weight:600;">ChatGPT</span><br>
+      深い分析・長文処理は <span style="color:#FF6B35; font-weight:600;">Claude</span>
+    </div>
+  </div>
+
+  <!-- Brand bar -->
+  <div id="brand" class="clip" data-start="0" data-duration="8" data-track-index="6"
+       style="bottom:0; left:0; width:1080px;">
+    <div class="brand-bar">
+      <span>SNS Aladdin</span>
+      <span>kb.snsaladdin.com</span>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  tl.from("#headline", { opacity: 0, y: -20, duration: 0.5 }, 0);
+  tl.from("#col-a",    { opacity: 0, x: -40,  duration: 0.6 }, 0.6);
+  tl.from("#col-b",    { opacity: 0, x: 40,   duration: 0.6 }, 0.9);
+  tl.from("#vs",       { opacity: 0, scale: 0, duration: 0.4 }, 1.2);
+  tl.from("#verdict",  { opacity: 0, y: 20,   duration: 0.6 }, 2.5);
+  tl.from("#brand",    { opacity: 0, duration: 0.3 }, 0);
+  window.__timelines["comparison"] = tl;
+</script>
+</body>
+</html>

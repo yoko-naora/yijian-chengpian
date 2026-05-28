@@ -183,21 +183,36 @@ save(audio, "output/voiceover.mp3")
 
 ## Step 4：Hyperframes 套模板
 
-| 内容类型 | 模板 | 场景 |
-|---------|------|------|
-| 教程/步骤 | `tutorial-steps` | 软件操作教学 |
-| 概念讲解 | `explainer` | 抽象概念、方法论 |
-| 工具对比 | `comparison` | A vs B 对比 |
-| 清单/技巧 | `listicle` | 技巧合集 |
+### 模板選択
 
-### 品牌规范
+`templates/hyperframes/compositions/` に4種のベーステンプレートがあり、適応して使用する。
 
-```
-字体：Noto Sans SC（中文）/ Noto Sans JP（日文）
-配色：主色沿用 kb.snsaladdin.com 设计系统
-Logo：snsaladdin 标识
-片尾：统一 CTA
-```
+| 内容类型 | 模板文件 | 场景 |
+|---------|---------|------|
+| 教程/步骤 | `tutorial-step.html` | 软件操作教学（Step N + 标题 + 説明） |
+| 概念讲解 | `explainer.html` | 抽象概念、方法论（标签 + 大标题 + 本文 + 強調BOX） |
+| 工具对比 | `comparison.html` | A vs B 对比（左右カラム + VSバッジ + 結論） |
+| 清单/技巧 | `listicle.html` | 技巧合集（番号付きリスト + スタッガー表示） |
+
+### アウトロ
+
+全動画の最後に `outro.html` を3-5秒付与。Logo + CTAボタン + URL。
+
+### ブランド仕様
+
+全テンプレート共通のデザインシステムは `templates/hyperframes/brand-guide.md` を参照。
+
+- フォント：中国語 `Noto Sans SC` / 日本語 `Noto Sans JP` + `Noto Serif JP`
+- 配色：背景 `#0a0a0b` / 文字 `#f1efea` / アクセント `#FF6B35` / グリーン `#2e7d32`
+- ブランドバー：全画面下部 60px に「SNS Aladdin | kb.snsaladdin.com」
+- 画面サイズ：抖音 1080×1920 / 小紅書 1080×1440 / X・YouTube 1920×1080
+
+### テンプレート使用手順
+
+1. 内容タイプに合うテンプレートを選ぶ
+2. テキスト・色・サイズを作成する動画に合わせて置換
+3. スクリプトのセクションに合わせて `data-duration` を調整
+4. `npm run check` で検証 → `npm run render` で MP4 出力
 
 ---
 
