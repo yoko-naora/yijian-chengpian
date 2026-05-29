@@ -1,5 +1,10 @@
 # 日常生产工作流
 
+> 🔴 **通用铁律：调用任何子 Skill 前，必须读完该 Skill 要求的所有 reference 文件，再动手写代码。**
+> 
+> 违规信号：用户说「你读 skill 了吗」「你没按流程」「这不像 skill 的产出」。  
+> 正确做法：子 Skill 加载后，先扫一遍它列出的 `references/` 清单，全部 Read 完，脑子里的方案能通过该 Skill 的身份测试（如 Swiss 4 条 / Editorial 3 条），再写第一行 HTML。
+
 ## 完整流水线
 
 ```
@@ -264,6 +269,22 @@ C. 教学 — AI 自动生成画面 + 配音的教学视频
 搜索方式：用关键词在上述网站搜索 → 筛选 → 下载 → 保存到 `screenshots/` 目录。
 
 ### A.2 生成卡片（guizang-social-card-skill）
+
+> 🔴 **硬约束：调用此 skill 前，必须读完以下全部引用文件再写代码。**
+> 
+> 已知失败模式：Agent 读 2-3 个引用就动手写 HTML，跳过 layout-recipes / components / style-system，产出无意义的装饰色块而非系统图。用户一眼看出「没读 skill」。
+> 
+> **必须读完（缺一不可）：**
+> - `references/platform-specs.md` — 尺寸、命名
+> - `references/theme-presets.md` — 配色 token
+> - `references/title-shortener.md` — 1:1 短标题提取
+> - `references/layout-recipes.md` — 布局配方，**决定用什么结构**
+> - `references/components.md` — 字体栈、字重映射、Swiss card-fill 互斥规则
+> - `references/style-system.md` — Swiss/Editorial 身份测试、反模式清单
+> 
+> **读完后自检：** 能否说出用的是哪个 recipe（如 S01/S08）？右边放的图形是在解释内容还是纯装饰？标题 font-weight 是否 ≤300？
+> 
+> 三个答案都过关，才开始写 HTML。
 
 把文案交给 `guizang-social-card-skill`，指定输出格式：
 
