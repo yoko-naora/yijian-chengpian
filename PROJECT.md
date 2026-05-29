@@ -48,13 +48,13 @@ AI自動教學影片生產工作流。選題→質檢→脚本→配音→模板
 
 | # | Issue | Priority | Status |
 |---|-------|----------|--------|
-| 1 | social-media-auto-publish 未接入 | High | 進行中 |
+| 1 | TikTok/X/YouTube 平台未接入 sau CLI | Medium | 待接入 |
 | 2 | NotebookLM 視頻生產驗證只到 Step 4 | Medium | 待續 |
 
 ## Next Actions (優先順)
 
-1. **social-media-auto-publish 接入** — Step 6 多平台一鍵分發
-2. **Hyperframes 渲染測試** — 實際跑一次教學視頻生產驗證
+1. **首次端到端生產測試** — 用一個選題跑完整流程驗證
+2. **TikTok 平台接入 sau** — 按 skill pattern 加入 TikTok CLI
 3. **NotebookLM 視頻生產驗證** — Step 5-6 完成
 
 ## Key Links
