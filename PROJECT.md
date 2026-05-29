@@ -31,6 +31,13 @@ AI自動教學影片生產工作流。選題→質檢→脚本→配音→模板
 - [x] guizang-social-card-skill 安装完毕
 - [x] Hyperframes Chrome Headless Shell 修復（2026-05-29）
 - [x] GitHub 遠程倉庫創建 + push（2026-05-29）
+- [x] Step 1.6 AI 寫作檢測閉環（dbs-ai-check → fix → re-check）
+- [x] A.1.5 文章配圖流程（截圖/AI生成/Pixabay+Unsplash+Pexels）
+- [x] B.1.5 / C.1.4 口播 & 教學素材準備
+- [x] 輸出自錄規範（一個任務一個文件夾）
+- [x] A.3 HTML 預覽必出（雙擊瀏覽器即看）
+- [x] 子 Skill 引用硬約束（必須全讀 reference 再寫代碼）
+- [x] 首次端到端 Path A 生產測試 — NotebookLM 錯題本公眾號文章（2026-05-29）
 
 ## Dependencies
 
@@ -53,9 +60,9 @@ AI自動教學影片生產工作流。選題→質檢→脚本→配音→模板
 
 ## Next Actions (優先順)
 
-1. **首次端到端生產測試** — 用一個選題跑完整流程驗證
-2. **TikTok 平台接入 sau** — 按 skill pattern 加入 TikTok CLI
-3. **NotebookLM 視頻生產驗證** — Step 5-6 完成
+1. **集成 wewrite 公眾號發佈** — `https://github.com/oaker-io/wewrite`，CLI `publish article.md --cover cover.png` → 微信草稿箱，接入 Step 6
+2. **路徑 C 視頻質量修復** — ElevenLabs 換中文原生音色（非 Rachel）+ Hyperframes 真動畫（非靜態幀）
+3. **TikTok 平台接入 sau** — 按 skill pattern 加入 TikTok CLI
 
 ## Key Links
 
