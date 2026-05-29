@@ -471,6 +471,56 @@ ffmpeg -i video_render.mp4 -i voiceover.mp3 `
 - 发布前确认标题
 - 发布后报结果：「抖音 ✓ / 小红书 ✓ / X ✓ / TikTok ⚠ 需手动确认」
 
+### CLI 命令
+
+> 使用 social-auto-upload (`sau`) CLI。安装路径：`~/social-auto-upload`，激活：`source .venv/Scripts/activate`（Windows）或 `source .venv/bin/activate`（Linux）。
+
+#### 前置：登录账号（首次使用）
+
+```bash
+cd ~/social-auto-upload && source .venv/Scripts/activate
+
+# 各平台登录（交互式，需要扫码或手动操作）
+sau douyin login --account <账号名>
+sau xiaohongshu login --account <账号名>
+sau kuaishou login --account <账号名>
+sau bilibili login --account <账号名>
+```
+
+#### 检查登录状态
+
+```bash
+sau douyin check --account <账号名>
+sau xiaohongshu check --account <账号名>
+```
+
+#### 上传视频
+
+```bash
+sau douyin upload --account <账号名> --file <视频路径.mp4> --title "<标题>" --tags "AI,教程"
+sau xiaohongshu upload --account <账号名> --file <视频路径.mp4> --title "<标题>" --tags "AI,效率"
+sau kuaishou upload --account <账号名> --file <视频路径.mp4> --title "<标题>"
+sau bilibili upload --account <账号名> --file <视频路径.mp4> --title "<标题>" --tags "AI,教程"
+```
+
+#### 定时发布
+
+```bash
+sau douyin upload --account <账号名> --file <视频路径.mp4> --title "<标题>" --schedule "2026-06-01 20:00"
+```
+
+### 支持平台（当前）
+
+| 平台 | CLI | 视频 | 图文 | 定时 |
+|------|:--:|:--:|:--:|:--:|
+| 抖音 | `sau douyin` | ✅ | ✅ | ✅ |
+| 小红书 | `sau xiaohongshu` | ✅ | ✅ | ✅ |
+| 快手 | `sau kuaishou` | ✅ | ✅ | ✅ |
+| Bilibili | `sau bilibili` | ✅ | ❌ | ✅ |
+| TikTok | 未接入 | — | — | — |
+| X/Twitter | 未接入 | — | — | — |
+| YouTube | 未接入 | — | — | — |
+
 ---
 
 ## 批量生产模式
