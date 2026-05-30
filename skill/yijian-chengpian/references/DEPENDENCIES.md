@@ -8,6 +8,8 @@
 ## 1. guizang-social-card-skill — 社交卡片
 
 **路径**：`~/.claude/skills/guizang-social-card-skill/`
+**仓库**：`https://github.com/op7418/guizang-social-card-skill`
+**版本**：`v0.14` | **更新**：2026-05-28 | **我们接入**：2026-05-30
 **我们的调用位置**：Path A.2（图文卡片）、Path B.4（口播封面）、Path C.5（教学封面）
 
 ### 功能清单
@@ -43,7 +45,8 @@
 
 ## 2. dbs-content — 内容选题诊断
 
-**调用方式**：`Skill: dbs:dbs-content`
+**调用方式**：`Skill: dbs:dbs-content` | **类型**：远程 Skill
+**版本**：远程（无法本地检查） | **我们接入**：2026-05-28
 **我们的调用位置**：Step 1.5 质检
 
 ### 功能清单
@@ -63,7 +66,8 @@
 
 ## 3. dbs-hook — 短视频开头优化
 
-**调用方式**：`Skill: dbs:dbs-hook`
+**调用方式**：`Skill: dbs:dbs-hook` | **类型**：远程 Skill
+**版本**：远程（无法本地检查） | **我们接入**：2026-05-28
 **我们的调用位置**：Step 2.5（路径 C，脚本写完后），Step 1.5（路径 A/B）
 
 ### 功能清单
@@ -84,7 +88,8 @@
 
 ## 4. dbs-xhs-title — 小红书标题公式
 
-**调用方式**：`Skill: dbs:dbs-xhs-title`
+**调用方式**：`Skill: dbs:dbs-xhs-title` | **类型**：远程 Skill
+**版本**：远程（无法本地检查） | **我们接入**：2026-05-28
 **我们的调用位置**：Step 1.5 质检（仅小红书/图文平台）
 
 ### 功能清单
@@ -104,7 +109,8 @@
 
 ## 5. dbs-ai-check — AI 写作检测
 
-**调用方式**：`Skill: dbs:dbs-ai-check`
+**调用方式**：`Skill: dbs:dbs-ai-check` | **类型**：远程 Skill
+**版本**：远程（无法本地检查） | **我们接入**：2026-05-28
 **我们的调用位置**：Step 1.6（所有路径，文字初稿后）
 
 ### 功能清单
@@ -126,7 +132,9 @@
 
 ## 6. video-use — 视频剪辑
 
-**调用方式**：`Skill: video-use`
+**路径**：`~/.claude/skills/video-use/`
+**仓库**：`https://github.com/browser-use/video-use`
+**版本**：`0.1.0`（pyproject.toml） | **更新**：2026-05-10 | **我们接入**：2026-05-28
 **我们的调用位置**：Path B.2（口播剪辑）、Path B.3（字幕+配乐）
 
 ### 功能清单
@@ -152,6 +160,8 @@
 ## 7. wewrite — 公众号发布
 
 **调用方式**：`Skill: wewrite` / CLI `python toolkit/cli.py`
+**仓库**：`https://github.com/oaker-io/wewrite` | **版本**：单 commit | **更新**：2026-04-02
+**我们接入**：2026-05-30
 **我们的调用位置**：Step 6（公众号分发）
 
 ### 功能清单
@@ -179,7 +189,9 @@
 
 ## 8. social-media-auto-publish (sau) — 多平台发布
 
-**调用方式**：CLI `sau <platform> upload`
+**路径**：`~/.claude/skills/social-media-auto-publish/`
+**仓库**：`https://github.com/dreammis/social-auto-upload`
+**版本**：无版本号（非 git 安装） | **安装**：2026-05-11 | **我们接入**：2026-05-28
 **我们的调用位置**：Step 6（短视频平台分发）
 
 ### 功能清单
@@ -206,7 +218,8 @@
 
 ## 9. ElevenLabs — 配音 API
 
-**调用方式**：Python SDK `elevenlabs`
+**调用方式**：Python SDK `elevenlabs` | **类型**：外部 API
+**版本**：`eleven_multilingual_v2` 模型 | **检查方式**：https://elevenlabs.io/docs/api-reference/versions
 **我们的调用位置**：Path C.2
 
 ### 功能清单
@@ -229,7 +242,8 @@
 
 ## 10. Hyperframes — 视频画面引擎
 
-**调用方式**：npm `npx hyperframes`
+**调用方式**：npm `npx hyperframes@0.6.52` | **类型**：外部 CLI
+**版本**：`0.6.52` | **检查方式**：`npm view hyperframes version`
 **我们的调用位置**：Path C.3
 
 ### 功能清单
