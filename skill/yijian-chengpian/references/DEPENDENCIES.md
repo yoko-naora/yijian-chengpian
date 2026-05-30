@@ -274,16 +274,16 @@
 | 优先级 | 功能 | 所属 Skill | 影响 |
 |:--:|------|-----------|------|
 | ✅ 已解决 | 中文原生音色 | Edge-TTS（2026-05-30 切换） | Path C 配音质量 |
-| 🔴 高 | GSAP 真动画 | Hyperframes | Path C 画面质量 |
-| 🟡 中 | 图库自动搜图（端到端） | guizang-social-card-skill | 卡片真实感 |
-| 🟡 中 | 文字压图 3 步法（端到端） | guizang-social-card-skill | 封面质量 |
-| 🟡 中 | 品类→排版主题匹配 | wewrite | 公众号文章专业感 |
-| 🟡 中 | TikTok 平台接入 | sau | 分发覆盖 |
+| ✅ 已解决 | 中文原生音色 | Edge-TTS（2026-05-30 切换） | Path C 配音质量 |
+| ✅ 已解决 | GSAP 真动画规则 | Hyperframes C.4.4 阻断检查 | Path C 画面质量 |
+| ✅ 已解决 | 素材管线统一 | Path A/C 共用搜图 | 全路径 |
+| ✅ 已解决 | 品类→排版主题匹配 | wewrite 10 品类映射 | 公众号文章专业感 |
+| ✅ 已解决 | TikTok 平台接入 | sau tiktok | 分发覆盖 |
+| ✅ 已解决 | 调色/转场 | video-use grade.py + crossfade | 口播视频精致度 |
 | 🟢 低 | 校验脚本自动跑 | guizang-social-card-skill | 质量兜底 |
 | 🟢 低 | 地图组件 | guizang-social-card-skill | 旅行品类体验 |
 | 🟢 低 | 标题压缩器 | guizang-social-card-skill | 公众号 1:1 封面 |
 | 🟢 低 | 定时发布 | sau | 运营自动化 |
-| 🟢 低 | 调色/转场 | video-use | 口播视频精致度 |
 
 ---
 
