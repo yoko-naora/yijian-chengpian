@@ -39,6 +39,9 @@ AI自動教學影片生產工作流。選題→質檢→脚本→配音→模板
 - [x] 子 Skill 引用硬約束（必須全讀 reference 再寫代碼）
 - [x] 首次端到端 Path A 生產測試 — NotebookLM 錯題本公眾號文章（2026-05-29）
 - [x] wewrite 集成 — 公眾號草稿箱發布（preview + publish + image-post），Step 6 公眾號後端就位（2026-05-30）
+- [x] 公眾號封面對比測試 — Claude (guizang-social-card-skill) vs GPT，Swiss IKB Blue 風格確認可行（2026-05-30）
+- [x] 執行規則加固 — SKILL.md 鐵律 + production.md 硬性檢查點表 + Step 4.4 渲染前阻斷（2026-05-30）
+- [x] Path C 視頻生產 — ElevenLabs 配音 + Hyperframes 畫面 + FFmpeg 合軌，流程走通但畫面效果待打磨（2026-05-30）
 
 ## Dependencies
 
@@ -61,7 +64,8 @@ AI自動教學影片生產工作流。選題→質檢→脚本→配音→模板
 | # | Issue | Priority | Status |
 |---|-------|----------|--------|
 | 1 | TikTok/X/YouTube 平台未接入 sau CLI | Medium | 待接入 |
-| 2 | NotebookLM 視頻生產驗證只到 Step 4 | Medium | 待續 |
+| 2 | Path C 視頻生產畫面待打磨 — 純文字版視頻效果未達預期，Hyperframes 動畫方案需重新評估 | High | 待處理 |
+| 3 | 合集封面未完成 — AI第一單 | Medium | 待處理 |
 
 ## Next Actions (優先順)
 
