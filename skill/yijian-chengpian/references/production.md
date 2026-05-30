@@ -2,7 +2,28 @@
 
 > 🔴 **通用铁律：调用任何子 Skill 前，必须读完该 Skill 要求的所有 reference 文件，再动手写代码。**
 > 
-> 违规信号：用户说「你读 skill 了吗」「你没按流程」「这不像 skill 的产出」。  
+> 违规信号：用户说「你读 skill 了吗」「你没按流程」「这不像 skill 的产出」。
+
+## 🔴 硬性检查点
+
+每完成一个 Step，对照此表逐项确认，全部 ✅ 才能进入下一步。
+
+| Step | 检查项 | 确认方式 |
+|------|--------|---------|
+| 1.5 | 选题质检已完成 | 对话中出现 Go / Fix / Kill 结论 |
+| 1.6 | AI 检测闭环完成 | 命中 ≤1 且全为 💡 |
+| 1.7 | 内容类型分支已确认 | 用户选了 A / B / C |
+| A.1 / B.1 / C.1 | 文案/脚本已写出 | article.md 文件存在 |
+| C.1.4 | 素材已问用户 | 对话中出现「你有没有现成素材？」 |
+| C.1.5 | dbs-hook 已调用 | 对话中出现 Hook 优化方案 |
+| C.2 | 配音已生成 | voiceover.mp3 文件存在 |
+| C.4.3 | 5 个社区组件已安装 | `npx hyperframes add` 全部执行 |
+| C.4.4 | lint + validate 通过 | `npm run check` 0 errors |
+| C.4.4 | 组件已嵌入 composition | composition HTML 中包含 grain/vignette/caption/wipe/outro |
+| C.4 | 素材（截图/照片）已嵌入 | composition HTML 中对应场景有 `<img>` |
+| C.5 | FFmpeg 合轨完成 | output/*.mp4 文件存在 |
+| 6 | 封面已生成 | wechat-21x9-cover.png 等文件存在 |
+| 6 | 分发已执行 | publish 或 upload 命令已跑 |
 > 正确做法：子 Skill 加载后，先扫一遍它列出的 `references/` 清单，全部 Read 完，脑子里的方案能通过该 Skill 的身份测试（如 Swiss 4 条 / Editorial 3 条），再写第一行 HTML。
 
 ## 完整流水线
@@ -601,6 +622,20 @@ npx hyperframes add logo-outro            # 片尾
 1. 写 composition HTML（单文件含全部场景）
 2. 嵌入社区组件
 3. `npm run check` → 验证
+
+> ✋ **阻断检查**：以下 **6 条全部为「是」** 才能执行 `npm run render`。
+>
+> | # | 检查项 | 确认 |
+> |---|--------|:--:|
+> | 1 | Step 4.3 五个组件已安装（grain / vignette / caption-pill-karaoke / grid-pixelate-wipe / logo-outro） | ⬜ |
+> | 2 | composition HTML 中已嵌入上述组件 | ⬜ |
+> | 3 | 素材（截图/照片）已复制到 hyperframes 项目目录 | ⬜ |
+> | 4 | 素材已在 composition 对应场景中以 `<img>` 引用 | ⬜ |
+> | 5 | `npm run check` 0 errors | ⬜ |
+> | 6 | 配音文件 voiceover.mp3 已存在于项目 output 目录 | ⬜ |
+>
+> 任何一条为「否」→ **停止，补上后再渲染。**
+
 4. `npm run render` → MP4 输出
 
 > 参考：`templates/hyperframes/brand-guide.md`（品牌规范细节）、Hyperframes 官方文档 https://hyperframes.heygen.com/introduction
