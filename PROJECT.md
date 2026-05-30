@@ -38,8 +38,13 @@ AI自動教學影片生產工作流。選題→質檢→脚本→配音→模板
 - [x] A.3 HTML 預覽必出（雙擊瀏覽器即看）
 - [x] 子 Skill 引用硬約束（必須全讀 reference 再寫代碼）
 - [x] 首次端到端 Path A 生產測試 — NotebookLM 錯題本公眾號文章（2026-05-29）
+- [x] wewrite 集成 — 公眾號草稿箱發布（preview + publish + image-post），Step 6 公眾號後端就位（2026-05-30）
 
 ## Dependencies
+
+| 组件 | 版本 | 状态 |
+|------|------|:--:|
+| wewrite | main | ✅ |
 
 | 组件 | 版本 | 状态 |
 |------|------|:--:|
@@ -60,9 +65,8 @@ AI自動教學影片生產工作流。選題→質檢→脚本→配音→模板
 
 ## Next Actions (優先順)
 
-1. **集成 wewrite 公眾號發佈** — `https://github.com/oaker-io/wewrite`，CLI `publish article.md --cover cover.png` → 微信草稿箱，接入 Step 6
-2. **路徑 C 視頻質量修復** — ElevenLabs 換中文原生音色（非 Rachel）+ Hyperframes 真動畫（非靜態幀）
-3. **TikTok 平台接入 sau** — 按 skill pattern 加入 TikTok CLI
+1. **路徑 C 視頻質量修復** — ElevenLabs 換中文原生音色（非 Rachel）+ Hyperframes 真動畫（非靜態幀）
+2. **TikTok 平台接入 sau** — 按 skill pattern 加入 TikTok CLI
 
 ## Key Links
 
