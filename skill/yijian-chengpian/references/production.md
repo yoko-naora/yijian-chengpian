@@ -107,6 +107,7 @@ projects/YYYY-MM-DD/
 | 美食 / 食谱 | 食谱、做菜、烘焙 | Editorial 杂志风 |
 | 影视 / 文化 | 影评、剧评、文化评论 | Editorial 杂志风 |
 | 教程 / How-to | 教程、步骤、指南 | Swiss 或 Editorial 均可 |
+| 个人故事 / 经历 | 创业、经历、品牌故事 | Editorial 杂志风 |
 
 **可以接但要告知限制**（需要用户提供图片）：
 
