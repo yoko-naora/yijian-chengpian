@@ -42,7 +42,8 @@ AI自動教學影片生產工作流。選題→質檢→脚本→配音→模板
 - [x] 公眾號封面對比測試 — Claude (guizang-social-card-skill) vs GPT，Swiss IKB Blue 風格確認可行（2026-05-30）
 - [x] 執行規則加固 — SKILL.md 鐵律 + production.md 硬性檢查點表 + Step 4.4 渲染前阻斷（2026-05-30）
 - [x] Path C 視頻生產 — ElevenLabs 配音 + Hyperframes 畫面 + FFmpeg 合軌，流程走通但畫面效果待打磨（2026-05-30）
-- [x] 2026-05-30 大改版：ElevenLabs→Edge-TTS免費中文配音、11品類路由目錄、圖片管線(搜圖→壓字→截圖美化)、能力邊界檢測、子Skill依賴清單DEPENDENCIES.md
+- [x] 2026-05-30 大改版：ElevenLabs→Edge-TTS免費中文配音、11品類路由目錄、圖片管線、能力邊界檢測、子Skill依賴清單
+- [x] 2026-05-30 影片生產：Agent Harness寓言 15場景 Playwright截圖+FFmpeg合軌（Hyperframes渲染管線失敗-沙箱無字體-改用Playwright）
 
 ## Dependencies
 
