@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-30",
+  "templates": [
+    {
+      "id": "ai-tool-tutorial",
+      "name": "AI 工具教学",
+      "description": "适合AI教程、软件教学、工具介绍。封面钩子→痛点诊断→分步教学→新旧对比→总结CTA。",
+      "category": "教程",
+      "style": "swiss",
+      "accent": "ikb",
+      "recipes": ["S01", "S05", "S06", "S02", "S07"],
+      "recipeLabels": { "S01": "封面钩子", "S05": "痛点诊断", "S06": "步骤流程", "S02": "新旧对比", "S07": "总结CTA" },
+      "cardCount": 5,
+      "platforms": ["xhs"],
+      "tags": ["AI", "教程", "工具", "软件", "教学"],
+      "demoContent": {
+        "headline": "AI 工具教学",
+        "subtitle": "从零到一，掌握你的第一个AI工具",
+        "kicker": "AI · 教程 · 免费"
+      }
+    },
+    {
+      "id": "product-review",
+      "name": "产品测评",
+      "description": "适合产品对比、工具测评、A vs B 横评。封面→双栏对比→数据排行→参数卡片→总结。",
+      "category": "测评",
+      "style": "swiss",
+      "accent": "ikb",
+      "recipes": ["S01", "S02", "S10", "S03", "S07"],
+      "recipeLabels": { "S01": "封面", "S02": "双栏对比", "S10": "数据排行", "S03": "参数卡片", "S07": "总结" },
+      "cardCount": 5,
+      "platforms": ["xhs"],
+      "tags": ["测评", "对比", "工具", "产品"],
+      "demoContent": {
+        "headline": "产品测评",
+        "subtitle": "A vs B，哪个更值得买？",
+        "kicker": "Review · 对比"
+      }
+    },
+    {
+      "id": "data-report",
+      "name": "数据报告",
+      "description": "适合数据分享、增长报告、周报月报。封面→KPI塔→柱状排行→账本清单→总结。",
+      "category": "数据",
+      "style": "swiss",
+      "accent": "lemon-green",
+      "recipes": ["S01", "S09", "S10", "S11", "S07"],
+      "recipeLabels": { "S01": "封面", "S09": "KPI指标塔", "S10": "柱状排行", "S11": "账本清单", "S07": "总结" },
+      "cardCount": 5,
+      "platforms": ["xhs"],
+      "tags": ["数据", "报告", "增长", "周报"],
+      "demoContent": {
+        "headline": "数据报告",
+        "subtitle": "六个月，四组数字",
+        "kicker": "Data · 数据分析"
+      }
+    },
+    {
+      "id": "avoid-pitfalls",
+      "name": "避坑指南",
+      "description": "适合踩坑分享、反模式、新手别踩雷。封面→三个坑点→正确vs错误→总结。",
+      "category": "避坑",
+      "style": "swiss",
+      "accent": "safety-orange",
+      "recipes": ["S01", "S05", "S02", "S07"],
+      "recipeLabels": { "S01": "封面警告", "S05": "三大坑点", "S02": "正确vs错误", "S07": "避坑总结" },
+      "cardCount": 4,
+      "platforms": ["xhs"],
+      "tags": ["避坑", "反模式", "新手", "警告"],
+      "demoContent": {
+        "headline": "避坑指南",
+        "subtitle": "新手最容易犯的三个错误",
+        "kicker": "Warning · 踩坑总结"
+      }
+    },
+    {
+      "id": "business-insight",
+      "name": "商业思考",
+      "description": "适合商业评论、认知输出、深度观点。杂志封面→分栏论述→引语金句→收官总结。",
+      "category": "商业",
+      "style": "editorial",
+      "theme": "ink-classic",
+      "recipes": ["M01", "M03", "M04", "M07"],
+      "recipeLabels": { "M01": "杂志封面", "M03": "分栏论述", "M04": "引语金句", "M07": "收官总结" },
+      "cardCount": 4,
+      "platforms": ["xhs"],
+      "tags": ["商业", "思考", "认知", "观点"],
+      "demoContent": {
+        "headline": "慢就是快",
+        "subtitle": "为什么看起来更慢的方法，长期更快",
+        "kicker": "思考 · 认知"
+      }
+    },
+    {
+      "id": "personal-story",
+      "name": "个人故事",
+      "description": "适合创业故事、个人经历、品牌叙事。封面→现场照片→旁注短文→收官。",
+      "category": "故事",
+      "style": "editorial",
+      "theme": "kraft-paper",
+      "recipes": ["M01", "M02", "M11", "M07"],
+      "recipeLabels": { "M01": "封面", "M02": "现场照片", "M11": "旁注叙述", "M07": "收官" },
+      "cardCount": 4,
+      "platforms": ["xhs"],
+      "tags": ["故事", "经历", "创业", "品牌"],
+      "demoContent": {
+        "headline": "我的第一单",
+        "subtitle": "从零到一的真实记录",
+        "kicker": "故事 · 创业"
+      }
+    },
+    {
+      "id": "tutorial-steps",
+      "name": "教程步骤",
+      "description": "适合分步教程、操作指南、食谱教程。封面→竖排流程→证据特写→收官。",
+      "category": "教程步骤",
+      "style": "editorial",
+      "theme": "indigo-porcelain",
+      "recipes": ["M01", "M14", "M10", "M07"],
+      "recipeLabels": { "M01": "封面", "M14": "竖排流程", "M10": "证据特写", "M07": "收官" },
+      "cardCount": 4,
+      "platforms": ["xhs"],
+      "tags": ["教程", "步骤", "操作", "指南"],
+      "demoContent": {
+        "headline": "教程步骤",
+        "subtitle": "四步完成，有图有真相",
+        "kicker": "How-to · 教程"
+      }
+    },
+    {
+      "id": "wechat-cover-pair",
+      "name": "公众号封面对",
+      "description": "微信公众号 21:9 主封面 + 1:1 方形分享封面。干净、有信息量。",
+      "category": "公众号",
+      "style": "swiss",
+      "accent": "ikb",
+      "boards": ["wide", "square"],
+      "recipes": ["S08", "S01"],
+      "recipeLabels": { "S08": "21:9 大图封面", "S01": "1:1 方封面" },
+      "cardCount": 2,
+      "platforms": ["wechat"],
+      "tags": ["公众号", "封面", "微信"],
+      "demoContent": {
+        "headline": "下一代写作工作流",
+        "subtitle": "AI 接管你的便签纸",
+        "kicker": "Release · 产品"
+      }
+    }
+  ]
+}

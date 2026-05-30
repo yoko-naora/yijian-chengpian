@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>一键成片 · 模板目录</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    /* ========== Catalog Shell ========== */
+    :root {
+      --bg: #0d0d0d;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #e0e0e0;
+      --text-dim: #888;
+      --accent: #002FA7;
+      --accent-on: #fff;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, 'Noto Sans SC', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      padding: 40px 48px;
+    }
+    header {
+      max-width: 1400px;
+      margin: 0 auto 48px;
+    }
+    header h1 {
+      font-size: 36px;
+      font-weight: 300;
+      letter-spacing: -.01em;
+      margin-bottom: 8px;
+    }
+    header p {
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* Filter tabs */
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin: 32px 0;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 8px 20px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: transparent;
+      color: var(--text-dim);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all .15s;
+      font-family: inherit;
+    }
+    .filter-btn:hover { border-color: #555; color: #ccc; }
+    .filter-btn.active { background: var(--accent); color: var(--accent-on); border-color: var(--accent); }
+
+    /* Grid */
+    .catalog-grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    /* Template Card */
+    .template-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color .2s, box-shadow .2s;
+      cursor: pointer;
+      position: relative;
+    }
+    .template-card:hover {
+      border-color: #444;
+      box-shadow: 0 4px 24px rgba(0,0,0,.4);
+    }
+    .template-card.selected {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    /* Preview area */
+    .preview-wrap {
+      background: #111;
+      position: relative;
+      height: 320px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .preview-wrap iframe {
+      border: 0;
+      /* Render posters at full size, scale down */
+      width: 1080px;
+      height: 1440px;
+      transform: scale(0.22);
+      transform-origin: center center;
+      pointer-events: none;
+    }
+    /* For wide+square pairs, scale differently */
+    .preview-wrap.wechat iframe {
+      width: 2100px;
+      height: 900px;
+      transform: scale(0.18);
+    }
+
+    /* Style badge */
+    .style-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+    .style-badge.swiss { background: #002FA7; color: #fff; }
+    .style-badge.editorial { background: #d4a04a; color: #0e0d0c; }
+
+    /* Card info */
+    .card-info {
+      padding: 16px 20px;
+    }
+    .card-info h3 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .card-info .desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .recipe-chips {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .recipe-chip {
+      padding: 2px 8px;
+      border-radius: 3px;
+      background: #252525;
+      font-size: 11px;
+      color: #aaa;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Select button */
+    .select-btn {
+      width: 100%;
+      padding: 10px 0;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all .15s;
+    }
+    .select-btn:hover { background: #252525; }
+    .template-card.selected .select-btn {
+      background: var(--accent);
+      color: var(--accent-on);
+      border-color: var(--accent);
+    }
+
+    /* Bottom bar */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 16px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      transform: translateY(100%);
+      transition: transform .2s;
+    }
+    .bottom-bar.show { transform: translateY(0); }
+    .bottom-bar .selection-info {
+      font-size: 15px;
+    }
+    .bottom-bar .selection-info span {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .bottom-bar .actions {
+      display: flex;
+      gap: 12px;
+    }
+    .btn {
+      padding: 10px 28px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      border: 0;
+      transition: all .15s;
+    }
+    .btn-cancel { background: #333; color: #ccc; }
+    .btn-cancel:hover { background: #444; }
+    .btn-confirm { background: var(--accent); color: var(--accent-on); }
+    .btn-confirm:hover { opacity: .9; }
+
+    /* Config modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .modal h2 { font-size: 22px; font-weight: 500; margin-bottom: 8px; }
+    .modal p { color: var(--text-dim); font-size: 14px; margin-bottom: 20px; }
+    .modal pre {
+      background: #111;
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      overflow-x: auto;
+      color: #a0d0a0;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .modal .customize-note {
+      background: #1a2a1a;
+      border: 1px solid #2a4a2a;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #8c8;
+    }
+    .modal .customize-note code {
+      background: #222;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+    .modal .close-btn {
+      margin-top: 16px;
+      padding: 10px 28px;
+      border: 0;
+      border-radius: 6px;
+      background: var(--accent);
+      color: var(--accent-on);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body { padding: 20px 16px; }
+      .catalog-grid { grid-template-columns: 1fr; }
+      header h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>一键成片 · 模板目录</h1>
+    <p>8 套预设模板，2 种风格 × 4 种配色。点击选择，不满意可换风格/换配色/换版式。</p>
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">全部</button>
+      <button class="filter-btn" data-filter="swiss">Swiss 瑞士</button>
+      <button class="filter-btn" data-filter="editorial">Editorial 杂志</button>
+    </div>
+  </header>
+
+  <div class="catalog-grid" id="grid"></div>
+
+  <!-- Bottom selection bar -->
+  <div class="bottom-bar" id="bottomBar">
+    <div class="selection-info">已选择：<span id="selName">—</span></div>
+    <div class="actions">
+      <button class="btn btn-cancel" id="btnCancel">取消</button>
+      <button class="btn btn-confirm" id="btnConfirm">确认使用</button>
+    </div>
+  </div>
+
+  <!-- Config display modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <h2 id="modalTitle">模板配置</h2>
+      <p>将此 JSON 告诉 Claude，或复制保存。不满意可以修改以下参数：</p>
+      <pre id="modalConfig"></pre>
+      <div class="customize-note">
+        <strong>不满意？修改这三个参数：</strong><br><br>
+        <strong>1. 换风格：</strong><code>"style": "swiss"</code> ↔ <code>"editorial"</code><br>
+        <strong>2. 换配色：</strong>Swiss 可选 <code>ikb</code> / <code>lemon-yellow</code> / <code>lemon-green</code> / <code>safety-orange</code> | Editorial 可选 <code>ink-classic</code> / <code>indigo-porcelain</code> / <code>forest-ink</code> / <code>kraft-paper</code> / <code>dune</code> / <code>midnight-ink</code><br>
+        <strong>3. 换版式：</strong>修改 <code>"recipes"</code> 数组中的顺序。Swiss 可用 S01-S12，Editorial 可用 M01-M16。完整列表见 references/layout-recipes.md
+      </div>
+      <button class="close-btn" id="btnClose">关闭</button>
+    </div>
+  </div>
+
+  <script>
+    // ====================================================================
+    // TEMPLATE DATA — synced from template-catalog-data.json
+    // ====================================================================
+    const TEMPLATES = [
+      { id:"ai-tool-tutorial",    name:"AI 工具教学", desc:"适合AI教程、软件教学、工具介绍。封面钩子→痛点诊断→分步教学→新旧对比→总结CTA。", style:"swiss", accent:"ikb", recipes:["S01","S05","S06","S02","S07"], recipeLabels:{"S01":"封面钩子","S05":"痛点诊断","S06":"步骤流程","S02":"新旧对比","S07":"总结CTA"}, cardCount:5, category:"教程", demo:{headline:"AI 工具教学",subtitle:"从零到一，掌握你的第一个AI工具",kicker:"AI · 教程 · 免费"} },
+      { id:"product-review",      name:"产品测评",   desc:"适合产品对比、工具测评、A vs B 横评。封面→双栏对比→数据排行→参数卡片→总结。", style:"swiss", accent:"ikb", recipes:["S01","S02","S10","S03","S07"], recipeLabels:{"S01":"封面","S02":"双栏对比","S10":"数据排行","S03":"参数卡片","S07":"总结"}, cardCount:5, category:"测评", demo:{headline:"产品测评",subtitle:"A vs B，哪个更值得买？",kicker:"Review · 对比"} },
+      { id:"data-report",         name:"数据报告",   desc:"适合数据分享、增长报告、周报月报。封面→KPI塔→柱状排行→账本清单→总结。", style:"swiss", accent:"lemon-green", recipes:["S01","S09","S10","S11","S07"], recipeLabels:{"S01":"封面","S09":"KPI指标塔","S10":"柱状排行","S11":"账本清单","S07":"总结"}, cardCount:5, category:"数据", demo:{headline:"数据报告",subtitle:"六个月，四组数字",kicker:"Data · 数据分析"} },
+      { id:"avoid-pitfalls",      name:"避坑指南",   desc:"适合踩坑分享、反模式、新手别踩雷。封面→三个坑点→正确vs错误→总结。", style:"swiss", accent:"safety-orange", recipes:["S01","S05","S02","S07"], recipeLabels:{"S01":"封面警告","S05":"三大坑点","S02":"正确vs错误","S07":"避坑总结"}, cardCount:4, category:"避坑", demo:{headline:"避坑指南",subtitle:"新手最容易犯的三个错误",kicker:"Warning · 踩坑总结"} },
+      { id:"business-insight",    name:"商业思考",   desc:"适合商业评论、认知输出、深度观点。杂志封面→分栏论述→引语金句→收官总结。", style:"editorial", theme:"ink-classic", recipes:["M01","M03","M04","M07"], recipeLabels:{"M01":"杂志封面","M03":"分栏论述","M04":"引语金句","M07":"收官总结"}, cardCount:4, category:"商业", demo:{headline:"慢就是快",subtitle:"为什么看起来更慢的方法，长期更快",kicker:"思考 · 认知"} },
+      { id:"personal-story",      name:"个人故事",   desc:"适合创业故事、个人经历、品牌叙事。封面→现场照片→旁注短文→收官。", style:"editorial", theme:"kraft-paper", recipes:["M01","M02","M11","M07"], recipeLabels:{"M01":"封面","M02":"现场照片","M11":"旁注叙述","M07":"收官"}, cardCount:4, category:"故事", demo:{headline:"我的第一单",subtitle:"从零到一的真实记录",kicker:"故事 · 创业"} },
+      { id:"tutorial-steps",      name:"教程步骤",   desc:"适合分步教程、操作指南、食谱教程。封面→竖排流程→证据特写→收官。", style:"editorial", theme:"indigo-porcelain", recipes:["M01","M14","M10","M07"], recipeLabels:{"M01":"封面","M14":"竖排流程","M10":"证据特写","M07":"收官"}, cardCount:4, category:"教程步骤", demo:{headline:"教程步骤",subtitle:"四步完成，有图有真相",kicker:"How-to · 教程"} },
+      { id:"wechat-cover-pair",   name:"公众号封面对", desc:"微信公众号 21:9 主封面 + 1:1 方形分享封面。干净、有信息量。", style:"swiss", accent:"ikb", isWechat:true, recipes:["S08","S01"], recipeLabels:{"S08":"21:9 大图封面","S01":"1:1 方封面"}, cardCount:2, category:"公众号", demo:{headline:"下一代写作工作流",subtitle:"AI 接管你的便签纸",kicker:"Release · 产品"} }
+    ];
+
+    // ====================================================================
+    // SWISS CSS (from template-swiss-card.html, lines 11-877)
+    // Last sync: 2026-05-30
+    // ====================================================================
+    const SWISS_CSS = `
+    :root,[data-accent="ikb"]{--paper:#fafaf8;--ink:#0a0a0a;--grey-1:#f0f0ee;--grey-2:#d4d4d2;--grey-3:#737373;--accent:#002FA7;--accent-on:#ffffff}
+    [data-accent="lemon-yellow"]{--paper:#fafaf8;--ink:#0a0a0a;--grey-1:#f0f0ee;--grey-2:#d4d4d2;--grey-3:#737373;--accent:#FFD500;--accent-on:#0a0a0a}
+    [data-accent="lemon-green"]{--paper:#fafaf8;--ink:#0a0a0a;--grey-1:#f0f0ee;--grey-2:#d4d4d2;--grey-3:#737373;--accent:#C5E803;--accent-on:#0a0a0a}
+    [data-accent="safety-orange"]{--paper:#fafaf8;--ink:#0a0a0a;--grey-1:#f0f0ee;--grey-2:#d4d4d2;--grey-3:#737373;--accent:#FF6B35;--accent-on:#ffffff}
+    :root{--sans:"Inter","Helvetica Neue",Helvetica,"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei UI",sans-serif;--sans-zh:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei UI","Inter",sans-serif;--mono:"IBM Plex Mono",ui-monospace,"SF Mono",Consolas,monospace;--sp-3:8px;--sp-4:12px;--sp-5:16px;--sp-6:24px;--sp-7:32px;--sp-8:40px;--sp-9:48px;--sp-10:64px;--sp-11:80px;--sp-12:96px;--sp-13:160px}
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--paper);font-family:var(--sans);color:var(--ink)}
+    .sheet{display:flex;flex-direction:column;align-items:center;gap:48px}
+    .poster{position:relative;background:var(--paper);color:var(--ink);overflow:hidden;isolation:isolate}
+    .poster.xhs{width:1080px;height:1440px}
+    .poster.square{width:1080px;height:1080px}
+    .poster.wide{width:2100px;height:900px}
+    .poster figure{margin:0}
+    .poster.xhs .content{padding:var(--sp-12) var(--sp-11)}
+    .poster.square .content{padding:var(--sp-11) var(--sp-11)}
+    .poster.wide .content{padding:var(--sp-11) var(--sp-13)}
+    .content{position:relative;width:100%;height:100%;z-index:2}
+    .h-hero{font-family:var(--sans);font-weight:200;font-size:240px;line-height:1.02;letter-spacing:-.02em;margin:0;color:var(--ink)}
+    .h-statement{font-family:var(--sans);font-weight:200;font-size:180px;line-height:1.05;letter-spacing:-.015em;margin:0;color:var(--ink)}
+    .h-xl{font-family:var(--sans);font-weight:300;font-size:120px;line-height:1.08;letter-spacing:-.01em;margin:0;color:var(--ink)}
+    .h-md{font-family:var(--sans);font-weight:400;font-size:56px;line-height:1.18;margin:0;color:var(--ink)}
+    .lead{font-family:var(--sans-zh);font-weight:400;font-size:30px;line-height:1.55;color:var(--ink);margin:0}
+    .body{font-family:var(--sans-zh);font-weight:400;font-size:26px;line-height:1.6;color:var(--ink);margin:0}
+    .t-cat{font-family:var(--sans);font-weight:600;font-size:22px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0}
+    .t-meta{font-family:var(--mono);font-weight:500;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-3);margin:0}
+    .num-mega{font-family:var(--sans);font-weight:200;font-size:200px;line-height:.92;letter-spacing:-.03em;color:var(--ink);margin:0}
+    .num-xl{font-family:var(--sans);font-weight:200;font-size:144px;line-height:.96;letter-spacing:-.02em;margin:0}
+    .poster.xhs .h-hero{font-size:168px}.poster.xhs .h-statement{font-size:124px}.poster.xhs .h-xl{font-size:96px}
+    .poster.xhs .num-mega{font-size:168px}.poster.xhs .num-xl{font-size:120px}
+    .poster.square .h-hero{font-size:180px}.poster.square .h-statement{font-size:140px}.poster.square .h-xl{font-size:88px}
+    .poster.square .num-mega{font-size:168px}
+    .stack{display:flex;flex-direction:column}
+    .row{display:flex;flex-direction:row}
+    .gap-3{gap:var(--sp-3)}.gap-4{gap:var(--sp-4)}.gap-5{gap:var(--sp-5)}.gap-6{gap:var(--sp-6)}.gap-7{gap:var(--sp-7)}.gap-8{gap:var(--sp-8)}.gap-9{gap:var(--sp-9)}.gap-10{gap:var(--sp-10)}
+    .grow{flex:1}
+    .hr-hairline{height:1px;background:var(--grey-2);border:0;margin:0}
+    .hr-accent{height:3px;background:var(--accent);border:0;width:96px;margin:0}
+    .card-ink{background:var(--ink);color:var(--paper);padding:var(--sp-8)}
+    .card-ink .t-cat,.card-ink .t-meta,.card-ink .lead,.card-ink .body,.card-ink .h-md{color:var(--paper)}
+    .card-accent{background:var(--accent);color:var(--accent-on);padding:var(--sp-8)}
+    .card-accent .t-cat,.card-accent .t-meta,.card-accent .lead,.card-accent .body,.card-accent .h-md{color:var(--accent-on)}
+    .card-fill{background:var(--grey-1);color:var(--ink);padding:var(--sp-8)}
+    .chrome-min{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-3);padding-bottom:var(--sp-6);border-bottom:1px solid var(--grey-2);margin-bottom:var(--sp-9)}
+    .trap-rows{display:flex;flex-direction:column}
+    .trap-row{display:grid;grid-template-columns:160px 1fr;gap:var(--sp-7);align-items:baseline;padding:var(--sp-7) 0;border-bottom:1px solid var(--grey-2)}
+    .trap-row:first-child{padding-top:0}
+    .trap-row .trap-lbl{font-family:var(--mono);font-weight:600;font-size:22px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+    .trap-row .trap-body{font-family:var(--sans-zh);font-weight:400;font-size:26px;line-height:1.45}
+    .pipeline-v{display:flex;flex-direction:column}
+    .pipeline-v .step{display:grid;grid-template-columns:80px 1fr;gap:var(--sp-7);padding:var(--sp-6) 0;border-bottom:1px solid var(--grey-2);align-items:center}
+    .pipeline-v .step:first-child{padding-top:0}
+    .pipeline-v .step .step-nb{font-family:var(--mono);font-weight:600;font-size:48px;letter-spacing:.04em;color:var(--accent);line-height:1}
+    .pipeline-v .step .step-title{font-family:var(--sans-zh);font-weight:500;font-size:36px;line-height:1.2;margin:0}
+    .pipeline-v .step .step-desc{font-family:var(--sans-zh);font-weight:400;font-size:24px;color:var(--grey-3);margin:4px 0 0;line-height:1.4}
+    .two-signals{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-7)}
+    .signal-block{padding:var(--sp-8)}
+    .signal-block.old{background:var(--grey-1)}
+    .signal-block.new{background:var(--ink);color:var(--paper)}
+    .signal-block.new .h-md,.signal-block.new .body,.signal-block.new .t-cat{color:var(--paper)}
+    .takeaway-ledger{display:flex;flex-direction:column}
+    .takeaway-row{display:grid;grid-template-columns:80px 1fr;gap:var(--sp-7);padding:var(--sp-7) 0;border-bottom:1px solid var(--grey-2);align-items:baseline}
+    .takeaway-row:first-child{padding-top:0}
+    .takeaway-row .tk-num{font-family:var(--mono);font-weight:600;font-size:36px;color:var(--accent)}
+    .takeaway-row .tk-title{font-family:var(--sans-zh);font-weight:500;font-size:32px;line-height:1.3}
+    .takeaway-row .tk-desc{font-family:var(--sans-zh);font-weight:400;font-size:22px;color:var(--grey-3);margin:4px 0 0;line-height:1.4}
+    .kpi-tower-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-7);align-items:end;height:100%}
+    .kpi-tower-row .tower-col{display:flex;flex-direction:column;gap:var(--sp-5);align-items:flex-start}
+    .kpi-tower-row .tower-col .num{font-family:var(--sans);font-weight:200;font-size:112px;line-height:1;letter-spacing:-.02em;margin:0}
+    .kpi-tower-row .tower-col .lbl{font-family:var(--mono);font-size:20px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey-3);margin:0}
+    .kpi-tower-row .tower-col .bar-tower{width:100%;height:var(--h,240px);background:var(--accent);transform-origin:bottom}
+    .kpi-tower-row .tower-col.muted .bar-tower{background:var(--grey-2)}
+    .poster.xhs .kpi-tower-row{grid-template-columns:1fr 1fr;gap:var(--sp-9)}
+    .h-bar-chart{display:grid;gap:var(--sp-6)}
+    .h-bar-chart .bar-row{display:grid;grid-template-columns:220px 1fr 120px;gap:var(--sp-6);align-items:center}
+    .h-bar-chart .bar-row .row-lbl{font-family:var(--sans-zh);font-weight:500;font-size:26px;color:var(--ink)}
+    .h-bar-chart .bar-row .row-track{position:relative;height:28px;background:var(--grey-1)}
+    .h-bar-chart .bar-row .row-fill{position:absolute;left:0;top:0;bottom:0;width:var(--w,50%);background:var(--accent)}
+    .h-bar-chart .bar-row .row-val{font-family:var(--mono);font-weight:500;font-size:26px;letter-spacing:.04em;text-align:right;color:var(--ink)}
+    .poster.xhs .h-bar-chart .bar-row{grid-template-columns:1fr;gap:var(--sp-4)}
+    .poster.xhs .h-bar-chart .bar-row .row-val{text-align:left}
+    .stacked-ledger{display:flex;flex-direction:column}
+    .stacked-ledger .ledger-row{display:grid;grid-template-columns:280px 1fr auto;gap:var(--sp-7);align-items:baseline;padding:var(--sp-7) 0;border-bottom:1px solid var(--grey-2)}
+    .stacked-ledger .ledger-row:first-child{padding-top:0}
+    .stacked-ledger .ledger-row:last-child{border-bottom:0}
+    .stacked-ledger .ledger-num{font-family:var(--sans);font-weight:200;font-size:112px;line-height:1;letter-spacing:-.02em;margin:0}
+    .stacked-ledger .ledger-lbl{font-family:var(--sans-zh);font-weight:500;font-size:30px;line-height:1.3;color:var(--ink)}
+    .stacked-ledger .ledger-lbl .sub{display:block;font-weight:400;font-size:22px;color:var(--grey-3);margin-top:var(--sp-3)}
+    .stacked-ledger .ledger-icn{width:56px;height:56px;color:var(--accent)}
+    .pair-preview{width:2400px;min-height:1180px;background:var(--grey-1);padding:var(--sp-9);display:grid;grid-template-columns:2100px 1080px;grid-template-rows:900px 1080px;gap:var(--sp-9);align-content:center;justify-content:center}
+    `;
+
+    // ====================================================================
+    // EDITORIAL CSS (from template-editorial-card.html, lines 10-754)
+    // Last sync: 2026-05-30
+    // ====================================================================
+    const EDITORIAL_CSS = `
+    :root,[data-theme="ink-classic"]{--paper:#f3f0e8;--paper-2:#ebe6da;--ink:#0a0a0b;--muted:#68625a;--line:rgba(10,10,11,.22);--accent:#111;--accent-soft:#d8d2c6;--ink-rgb:10,10,11;--paper-rgb:243,240,232;--accent-rgb:17,17,17}
+    [data-theme="indigo-porcelain"]{--paper:#f2f4f5;--paper-2:#e5ebef;--ink:#0a1f3d;--muted:#5f6d78;--line:rgba(10,31,61,.20);--accent:#315d93;--accent-soft:#d7e1ec;--ink-rgb:10,31,61;--paper-rgb:242,244,245;--accent-rgb:49,93,147}
+    [data-theme="forest-ink"]{--paper:#f5f1e8;--paper-2:#e8dfcf;--ink:#16251b;--muted:#5d665d;--line:rgba(22,37,27,.22);--accent:#2e6b4f;--accent-soft:#d4dfd2;--ink-rgb:22,37,27;--paper-rgb:245,241,232;--accent-rgb:46,107,79}
+    [data-theme="kraft-paper"]{--paper:#eedfc7;--paper-2:#dfc9a8;--ink:#2a1e13;--muted:#755f49;--line:rgba(42,30,19,.24);--accent:#9b5a2e;--accent-soft:#d5b58f;--ink-rgb:42,30,19;--paper-rgb:238,223,199;--accent-rgb:155,90,46}
+    [data-theme="dune"]{--paper:#f0e6d2;--paper-2:#ded0b7;--ink:#1f1a14;--muted:#6f6557;--line:rgba(31,26,20,.22);--accent:#8f7650;--accent-soft:#d4c2a4;--ink-rgb:31,26,20;--paper-rgb:240,230,210;--accent-rgb:143,118,80}
+    :root{--serif-zh:"Noto Serif SC","Songti SC","STSong",serif;--serif-en:"Playfair Display","Noto Serif SC",serif;--sans-zh:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei UI",sans-serif;--sans-en:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;--mono:"IBM Plex Mono",ui-monospace,"SF Mono",Consolas,monospace}
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--paper);font-family:var(--sans-zh);color:var(--ink)}
+    .poster{position:relative;background:var(--paper);color:var(--ink);overflow:hidden;isolation:isolate}
+    .poster.xhs{width:1080px;height:1440px}
+    .poster.square{width:1080px;height:1080px}
+    .poster.wide{width:2100px;height:900px}
+    .poster figure{margin:0}
+    .poster.xhs .content{padding:96px 88px}
+    .poster.square .content{padding:88px 88px}
+    .poster.wide .content{padding:88px 120px}
+    .content{position:relative;width:100%;height:100%;z-index:2}
+    .grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.35;mix-blend-mode:multiply;background-image:radial-gradient(rgba(0,0,0,.045) 1px,transparent 1px);background-size:3px 3px}
+    .kicker{font-family:var(--mono);font-size:21px;letter-spacing:.22em;text-transform:uppercase;color:rgba(var(--ink-rgb),.55);margin:0 0 18px}
+    .h-display{font-family:var(--serif-zh);font-weight:500;font-size:124px;line-height:1.06;letter-spacing:.04em;margin:0 0 24px;color:var(--ink)}
+    .h-xl{font-family:var(--serif-zh);font-weight:500;font-size:88px;line-height:1.10;letter-spacing:.03em;margin:0 0 24px;color:var(--ink)}
+    .h-md{font-family:var(--serif-zh);font-weight:500;font-size:56px;line-height:1.18;letter-spacing:.02em;margin:0 0 18px;color:var(--ink)}
+    .h-sub{font-family:var(--serif-en);font-style:italic;font-weight:400;font-size:36px;color:var(--muted);margin:0 0 24px}
+    .lead{font-family:var(--serif-zh);font-weight:400;font-size:28px;line-height:1.55;color:rgba(var(--ink-rgb),.82);margin:0 0 24px}
+    .body{font-family:var(--serif-zh);font-weight:400;font-size:24px;line-height:1.65;color:rgba(var(--ink-rgb),.80);margin:0 0 18px}
+    .poster.square .h-display{font-size:116px}.poster.square .h-xl{font-size:78px}.poster.square .h-md{font-size:48px}
+    .issue-row{display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:20px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    .issue-row .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+    .stack{display:flex;flex-direction:column}
+    .gap-2{gap:24px}.gap-3{gap:36px}.gap-4{gap:48px}
+    .row{display:flex;flex-direction:row}
+    .grow{flex:1}
+    .rule{height:1px;background:var(--line);border:0;margin:24px 0}
+    .rule-accent{height:2px;background:var(--accent);border:0;margin:24px 0;width:96px}
+    .pipeline-v{display:flex;flex-direction:column;gap:28px}
+    .pipeline-v .step{display:grid;grid-template-columns:80px 1fr;gap:28px;align-items:baseline;padding-bottom:24px;border-bottom:1px solid var(--line)}
+    .pipeline-v .step:last-child{border-bottom:0}
+    .pipeline-v .step-nb{font-family:var(--mono);font-size:32px;color:var(--accent)}
+    .pipeline-v .step-title{font-family:var(--serif-zh);font-weight:500;font-size:40px;letter-spacing:.02em;margin:0 0 8px;color:var(--ink)}
+    .pipeline-v .step-desc{font-family:var(--serif-zh);font-weight:400;font-size:24px;line-height:1.6;color:rgba(var(--ink-rgb),.72);margin:0}
+    .ledger{display:flex;flex-direction:column}
+    .ledger-row{display:grid;grid-template-columns:96px 1fr;gap:24px;align-items:baseline;padding:28px 0;border-bottom:1px solid var(--line)}
+    .ledger-row .ledger-nb{font-family:var(--mono);font-size:28px;color:var(--accent);letter-spacing:.08em}
+    .ledger-row .ledger-title{font-family:var(--serif-zh);font-weight:500;font-size:38px;letter-spacing:.02em;color:var(--ink)}
+    .ledger-row .ledger-note{font-family:var(--serif-zh);font-weight:400;font-size:22px;line-height:1.55;color:rgba(var(--ink-rgb),.72)}
+    .pullquote{font-family:var(--serif-zh);font-style:italic;font-weight:500;font-size:64px;line-height:1.28;color:var(--ink);margin:0}
+    .callout{border-left:3px solid var(--accent);padding:18px 28px;font-family:var(--serif-zh);font-style:italic;font-size:36px;line-height:1.35;color:var(--ink);background:var(--paper-2)}
+    .callout .callout-src{display:block;margin-top:18px;font-style:normal;font-family:var(--mono);font-size:20px;letter-spacing:.12em;color:var(--muted)}
+    .issue-strip{position:absolute;left:88px;right:88px;bottom:56px;display:flex;justify-content:space-between;align-items:center;gap:32px;font-family:var(--mono);font-size:18px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--line);padding-top:18px}
+    .frame-img{position:relative;overflow:hidden;background:var(--paper-2);display:block;margin:0}
+    .frame-img img{width:100%;height:100%;object-fit:cover;object-position:center 50%;display:block}
+    .frame-img.r-4x3{aspect-ratio:4/3}.frame-img.r-16x10{aspect-ratio:16/10}
+    `;
+
+    // ====================================================================
+    // RECIPE HTML SKELETONS — Swiss (S01-S12) and Editorial (M01-M07/M10/M11/M14)
+    // Each function takes a {headline,subtitle,kicker} object and returns HTML
+    // ====================================================================
+
+    // === SWISS RECIPES ===
+    function S01(d) { return `<section class="poster xhs"><div class="content stack gap-9"><div class="chrome-min"><span>${d.kicker}</span><span>01 / 05</span></div><div class="stack gap-7" style="margin-top:var(--sp-7)"><p class="t-cat">${d.kicker}</p><h1 class="h-statement">${d.headline.split(' ')[0]}<br>${d.headline.split(' ').slice(1).join(' ')}</h1></div><hr class="hr-accent"><p class="lead" style="max-width:800px">${d.subtitle}</p><div class="grow"></div><div class="row gap-6"><p class="t-meta">1</p><p class="t-meta">/ 模板预览</p><p class="t-meta">/ 演示</p></div></div></section>`; }
+    function S02(d) { return `<section class="poster xhs"><div class="content stack gap-9"><div class="chrome-min"><span>${d.kicker}</span><span>04 / 05</span></div><div class="stack gap-7"><p class="t-cat">对比</p><h2 class="h-xl">两回事</h2></div><div class="two-signals"><div class="signal-block old stack gap-6"><h3 class="h-md" style="font-size:42px">旧方式</h3><p class="body" style="font-size:24px">传统做法的问题点</p></div><div class="signal-block new stack gap-6"><h3 class="h-md" style="font-size:42px">新方式</h3><p class="body" style="font-size:24px;color:var(--paper)">新做法的优势</p></div></div><div class="grow"></div><div class="card-accent" style="padding:var(--sp-6)"><p class="lead" style="color:var(--accent-on)">对比总结核心观点</p></div></div></section>`; }
+    function S03(d) { return `<section class="poster xhs"><div class="content stack gap-9"><div class="chrome-min"><span>${d.kicker}</span><span>04 / 05</span></div><div class="stack gap-7"><p class="t-cat">参数</p><h2 class="h-xl">核心信息</h2></div><div class="card-fill stack gap-6" style="padding:var(--sp-8)"><p class="t-cat">FILE</p><h3 class="h-md">关键属性</h3><p class="body">要点一</p><p class="body">要点二</p><p class="body">要点三</p></div></div></section>`; }
+    function S05(d) { return `<section class="poster xhs"><div class="content stack gap-9"><div class="chrome-min"><span>${d.kicker}</span><span>02 / 05</span></div><div class="stack gap-7"><p class="t-cat">问题诊断</p><h2 class="h-xl">三个<br>重要问题</h2></div><div class="trap-rows" style="margin-top:var(--sp-9)"><div class="trap-row"><span class="trap-lbl">✕ 第一</span><span class="trap-body">问题一的描述</span></div><div class="trap-row"><span class="trap-lbl">✕ 第二</span><span class="trap-body">问题二的描述</span></div><div class="trap-row"><span class="trap-lbl">✕ 第三</span><span class="trap-body">问题三的描述</span></div></div><div class="grow"></div><div class="card-accent" style="padding:var(--sp-6)"><p class="lead" style="color:var(--accent-on)">一句话总结痛点</p></div></div></section>`; }
+    function S06(d) { return `<section class="poster xhs"><div class="content stack gap-9"><div class="chrome-min"><span>${d.kicker}</span><span>03 / 05</span></div><div class="stack gap-7"><p class="t-cat">解决方案</p><h2 class="h-xl" style="font-size:82px">三步流程</h2></div><div class="pipeline-v" style="margin-top:var(--sp-7)"><div class="step"><span class="step-nb">01</span><div><h3 class="step-title">第一步</h3><p class="step-desc">第一步的说明文字</p></div></div><div class="step"><span class="step-nb">02</span><div><h3 class="step-title">第二步</h3><p class="step-desc">第二步的说明文字</p></div></div><div class="step"><span class="step-nb">03</span><div><h3 class="step-title">第三步</h3><p class="step-desc">第三步的说明文字，做完</p></div></div></div><div class="grow"></div><p class="t-meta">三步流程示例</p></div></section>`; }
+    function S07(d) { return `<section class="poster xhs"><div class="content stack gap-9"><div class="chrome-min"><span>${d.kicker}</span><span>05 / 05</span></div><div class="stack gap-7"><p class="t-cat">总结</p><h2 class="h-xl">记住三点</h2></div><div class="takeaway-ledger" style="margin-top:var(--sp-7)"><div class="takeaway-row"><span class="tk-num">01</span><div><h3 class="tk-title">第一要点</h3><p class="tk-desc">第一要点的简短说明</p></div></div><div class="takeaway-row"><span class="tk-num">02</span><div><h3 class="tk-title">第二要点</h3><p class="tk-desc">第二要点的简短说明</p></div></div><div class="takeaway-row"><span class="tk-num">03</span><div><h3 class="tk-title">第三要点</h3><p class="tk-desc">第三要点的简短说明</p></div></div></div><div class="grow"></div><div class="card-ink" style="padding:var(--sp-7)"><p class="lead" style="color:var(--paper);text-align:center">CTA 行动号召语句</p></div></div></section>`; }
+    function S08(d, board) { if(board==='wide') return `<section class="poster wide"><div class="content stack gap-7"><div class="chrome-min"><span>${d.kicker}</span><span>Cover</span></div><div class="image-hero"><div class="hero-img-wrap"><div class="hero-overlay-block"><p class="t-cat">封面</p><h1 class="h-statement">${d.headline}</h1></div></div><div class="hero-stats"><div class="stat-block"><p class="num">132K</p><p class="lbl">Weekly</p></div><div class="stat-block"><p class="num">3.4x</p><p class="lbl">Speed</p></div><div class="stat-block"><p class="num">98%</p><p class="lbl">Rate</p></div></div></div></div></section>`; else return `<section class="poster square"><div class="content stack" style="justify-content:center"><div class="stack gap-7"><p class="t-cat">${d.kicker}</p><h1 class="h-statement" style="font-size:128px">${d.headline}</h1><hr class="hr-accent"><p class="lead" style="max-width:720px">${d.subtitle}</p></div></div></section>`; }
+    function S09(d) { return `<section class="poster xhs"><div class="content stack gap-7"><p class="t-cat">Data</p><h2 class="h-xl">四组数字</h2><div class="kpi-tower-row"><div class="tower-col"><p class="num">132K</p><p class="lbl">指标一</p><div class="bar-tower" style="--h:280px"></div></div><div class="tower-col"><p class="num">3.4M</p><p class="lbl">指标二</p><div class="bar-tower" style="--h:200px"></div></div><div class="tower-col"><p class="num">68%</p><p class="lbl">指标三</p><div class="bar-tower" style="--h:140px"></div></div><div class="tower-col muted"><p class="num">8.2%</p><p class="lbl">指标四</p><div class="bar-tower" style="--h:100px"></div></div></div></div></section>`; }
+    function S10(d) { return `<section class="poster xhs"><div class="content stack gap-7"><p class="t-cat">Ranking</p><h2 class="h-xl">Top 6</h2><div class="h-bar-chart"><div class="bar-row"><div class="row-lbl">项目 A</div><div class="row-track"><div class="row-fill" style="--w:94%"></div></div><div class="row-val">94%</div></div><div class="bar-row"><div class="row-lbl">项目 B</div><div class="row-track"><div class="row-fill" style="--w:78%"></div></div><div class="row-val">78%</div></div><div class="bar-row"><div class="row-lbl">项目 C</div><div class="row-track"><div class="row-fill" style="--w:62%"></div></div><div class="row-val">62%</div></div><div class="bar-row"><div class="row-lbl">项目 D</div><div class="row-track"><div class="row-fill" style="--w:48%"></div></div><div class="row-val">48%</div></div><div class="bar-row"><div class="row-lbl">项目 E</div><div class="row-track"><div class="row-fill" style="--w:36%"></div></div><div class="row-val">36%</div></div><div class="bar-row"><div class="row-lbl">项目 F</div><div class="row-track"><div class="row-fill" style="--w:28%"></div></div><div class="row-val">28%</div></div></div></div></section>`; }
+    function S11(d) { return `<section class="poster xhs"><div class="content stack gap-7"><p class="t-cat">Ledger</p><h2 class="h-xl">清单</h2><div class="stacked-ledger"><div class="ledger-row"><p class="ledger-num">¥1,280</p><div class="ledger-lbl">项目一<span class="sub">项目一说明</span></div></div><div class="ledger-row"><p class="ledger-num">¥860</p><div class="ledger-lbl">项目二<span class="sub">项目二说明</span></div></div><div class="ledger-row"><p class="ledger-num">¥540</p><div class="ledger-lbl">项目三<span class="sub">项目三说明</span></div></div><div class="ledger-row"><p class="ledger-num">¥320</p><div class="ledger-lbl">项目四<span class="sub">项目四说明</span></div></div></div></div></section>`; }
+
+    // === EDITORIAL RECIPES ===
+    function M01(d) { return `<section class="poster xhs"><div class="grain"></div><div class="content stack gap-4"><div class="issue-row"><span>Vol.01</span><span class="dot"></span><span>2026</span></div><div class="stack gap-2"><p class="kicker">${d.kicker}</p><h1 class="h-display">${d.headline}</h1><p class="h-sub">${d.subtitle}</p></div><figure class="frame-img r-16x10"><div style="background:var(--paper-2);width:100%;height:100%"></div></figure><p class="lead">一段克制的引语，解释为什么这组卡片值得读完。</p></div><div class="issue-strip"><span>Issue · Preview</span><span>—</span><span>by Author</span></div></section>`; }
+    function M02(d) { return `<section class="poster xhs"><div class="grain"></div><div class="content stack gap-3"><p class="kicker">${d.kicker}</p><h2 class="h-xl">现场记录</h2><figure class="frame-img r-4x3"><div style="background:var(--paper-2);width:100%;height:100%"></div></figure><p class="body" style="max-width:700px">一段纪实说明文字，配合照片讲述当时的场景、感受和发现。</p><p class="lead" style="margin-top:24px">一个简短有力的结论</p></div></section>`; }
+    function M03(d) { return `<section class="poster xhs"><div class="grain"></div><div class="content stack gap-4"><div class="issue-row"><span>Vol.01</span><span class="dot"></span><span>Essay</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:24px"><div class="stack gap-2"><h2 class="h-xl">${d.headline}</h2><hr class="rule-accent"><p class="lead">左栏核心论述，解释观点背后的逻辑。三到四句说清楚一个想法。</p></div><div class="stack gap-2"><p class="body" style="margin-top:48px">右栏展开细节。第一段叙事展开。具体的数据、案例、引用都在这里。</p><p class="body">第二段补充论据。让读者有足够信息做出自己的判断。</p></div></div></div></section>`; }
+    function M04(d) { return `<section class="poster xhs"><div class="grain"></div><div class="content stack" style="justify-content:center;align-items:center;text-align:center"><p class="kicker">「</p><h2 class="pullquote" style="max-width:800px;text-align:center">${d.headline}</h2><p class="kicker" style="margin-top:48px">」</p><div style="margin-top:36px"><p class="body" style="color:var(--muted)">— ${d.subtitle}</p></div></div></section>`; }
+    function M07(d) { return `<section class="poster xhs"><div class="grain"></div><div class="content stack gap-3"><p class="kicker">Final · 总结</p><h2 class="h-xl">收官要点</h2><div class="ledger"><div class="ledger-row"><span class="ledger-nb">01</span><div><h3 class="ledger-title">要点一</h3><p class="ledger-note">要点一的简短说明</p></div></div><div class="ledger-row"><span class="ledger-nb">02</span><div><h3 class="ledger-title">要点二</h3><p class="ledger-note">要点二的简短说明</p></div></div><div class="ledger-row"><span class="ledger-nb">03</span><div><h3 class="ledger-title">要点三</h3><p class="ledger-note">要点三的简短说明</p></div></div><div class="ledger-row"><span class="ledger-nb">04</span><div><h3 class="ledger-title">要点四</h3><p class="ledger-note">要点四的简短说明</p></div></div></div><div class="callout" style="margin-top:32px">「一个有力的结尾引语，让读者记住核心信息。」<span class="callout-src">— Source</span></div></div></section>`; }
+    function M10(d) { return `<section class="poster xhs"><div class="grain"></div><div class="content stack gap-3"><p class="kicker">Evidence · 证据</p><h2 class="h-xl">实拍展示</h2><figure class="frame-img r-4x3"><div style="background:var(--paper-2);width:100%;height:100%"></div></figure><p class="lead">图片下方展示关键证据和数据。让读者看到真实效果。</p></div></section>`; }
+    function M11(d) { return `<section class="poster xhs"><div class="grain"></div><div class="content stack gap-3"><p class="kicker">Notes · 旁注</p><h2 class="h-xl">${d.headline}</h2><div style="display:grid;grid-template-columns:1fr 220px;gap:48px;margin-top:12px"><div class="stack gap-2"><p class="body">主栏展开核心叙述。第一段讲背景和动机，为什么写下这些想法。</p><p class="body">第二段展开过程和细节。关键的转折点、困难、发现。</p><p class="body">第三段收束，总结从这段经历中学到的东西。</p></div><div style="border-left:1px solid var(--line);padding-left:24px"><p style="font-family:var(--mono);font-size:20px;color:var(--muted);margin:0 0 16px">关键时间</p><p style="font-family:var(--mono);font-size:20px;color:var(--muted);margin:0 0 16px">关键人物</p><p style="font-family:var(--mono);font-size:20px;color:var(--muted);margin:0 0 16px">关键数据</p></div></div></div></section>`; }
+    function M14(d) { return `<section class="poster xhs"><div class="grain"></div><div class="content stack gap-3"><p class="kicker">Workflow · ${d.kicker}</p><h2 class="h-xl">操作流程</h2><div class="pipeline-v" style="margin-top:16px"><div class="step"><span class="step-nb">01</span><div><h3 class="step-title">第一步</h3><p class="step-desc">第一步的具体操作说明</p></div></div><div class="step"><span class="step-nb">02</span><div><h3 class="step-title">第二步</h3><p class="step-desc">第二步的具体操作说明</p></div></div><div class="step"><span class="step-nb">03</span><div><h3 class="step-title">第三步</h3><p class="step-desc">第三步的具体操作说明</p></div></div><div class="step"><span class="step-nb">04</span><div><h3 class="step-title">第四步</h3><p class="step-desc">第四步的具体操作说明</p></div></div></div></div></section>`; }
+
+    // Recipe dispatch map
+    const SWISS_FN = { S01,S02,S03,S05,S06,S07,S08,S09,S10,S11 };
+    const EDITORIAL_FN = { M01,M02,M03,M04,M07,M10,M11,M14 };
+
+    function buildSrcdoc(t) {
+      const isSwiss = t.style === 'swiss';
+      const css = isSwiss ? SWISS_CSS : EDITORIAL_CSS;
+      const attr = isSwiss ? `data-accent="${t.accent}"` : `data-theme="${t.theme}"`;
+      const demo = t.demo || { headline:t.name, subtitle:'', kicker:'' };
+      let html = '';
+
+      if (t.isWechat) {
+        // WeChat pair: wide + square in a preview wrapper
+        html = `<div class="sheet"><div class="pair-preview"><div class="preview-wide">${S08(demo,'wide')}</div><div class="preview-square">${S08(demo,'square')}</div></div></div>`;
+      } else {
+        html = `<div class="sheet">\n`;
+        t.recipes.forEach(r => {
+          const fn = isSwiss ? SWISS_FN[r] : EDITORIAL_FN[r];
+          if (fn) html += fn(demo) + '\n';
+        });
+        html += `</div>`;
+      }
+
+      return `<!doctype html><html lang="zh-CN" ${attr}><head><meta charset="utf-8"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Noto+Sans+SC:wght@200;300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"><style>${css}</style></head><body>${html}<script>window.addEventListener('load',function(){var s=document.createElement('style');s.textContent='body{padding:0!important;margin:0!important}';document.head.appendChild(s)})<\/script></body></html>`;
+    }
+
+    // ====================================================================
+    // RENDER CATALOG
+    // ====================================================================
+    let selectedId = null;
+    const grid = document.getElementById('grid');
+    const bottomBar = document.getElementById('bottomBar');
+    const selName = document.getElementById('selName');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalConfig = document.getElementById('modalConfig');
+
+    function renderCards(filter) {
+      grid.innerHTML = '';
+      TEMPLATES.forEach(t => {
+        if (filter && filter !== 'all' && t.style !== filter) return;
+        const card = document.createElement('div');
+        card.className = 'template-card' + (selectedId === t.id ? ' selected' : '');
+        card.dataset.id = t.id;
+
+        const isSwiss = t.style === 'swiss';
+        const badgeClass = isSwiss ? 'swiss' : 'editorial';
+        const badgeText = isSwiss ? 'Swiss' : 'Editorial';
+        const chipText = t.recipes.map(r => {
+          const label = t.recipeLabels[r] || r;
+          return `<span class="recipe-chip">${label}</span>`;
+        }).join('');
+
+        card.innerHTML = `
+          <div class="preview-wrap${t.isWechat?' wechat':''}">
+            <span class="style-badge ${badgeClass}">${badgeText}</span>
+          </div>
+          <div class="card-info">
+            <h3>${t.name}</h3>
+            <p class="desc">${t.desc}</p>
+            <div class="recipe-chips">${chipText}</div>
+            <p class="desc" style="margin-top:6px">${t.cardCount}张卡片 · ${isSwiss ? (t.accent||'').replace(/-/g,' ') : (t.theme||'').replace(/-/g,' ')}</p>
+            <button class="select-btn">${selectedId===t.id?'已选择':'选择此模板'}</button>
+          </div>`;
+
+        card.addEventListener('click', (e) => {
+          if (e.target.classList.contains('select-btn') || e.target.closest('.card-info')) {
+            selectTemplate(t);
+          }
+        });
+
+        // Build iframe srcdoc after DOM insertion (for the preview-wrap)
+        grid.appendChild(card);
+        const wrap = card.querySelector('.preview-wrap');
+        const iframe = document.createElement('iframe');
+        iframe.srcdoc = buildSrcdoc(t);
+        wrap.appendChild(iframe);
+      });
+    }
+
+    function selectTemplate(t) {
+      selectedId = t.id;
+      selName.textContent = t.name;
+      bottomBar.classList.add('show');
+      document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+      const card = document.querySelector(`[data-id="${t.id}"]`);
+      if (card) card.classList.add('selected');
+      // Update all select buttons
+      document.querySelectorAll('.select-btn').forEach(b => {
+        b.textContent = b.closest('.template-card')?.dataset.id === t.id ? '已选择' : '选择此模板';
+      });
+    }
+
+    document.getElementById('btnCancel').addEventListener('click', () => {
+      selectedId = null;
+      bottomBar.classList.remove('show');
+      document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('.select-btn').forEach(b => b.textContent = '选择此模板');
+    });
+
+    document.getElementById('btnConfirm').addEventListener('click', () => {
+      const t = TEMPLATES.find(x => x.id === selectedId);
+      if (!t) return;
+      modalTitle.textContent = '已选择：' + t.name;
+      // Build clean JSON config
+      const config = {
+        template: t.id,
+        name: t.name,
+        style: t.style,
+        recipes: t.recipes
+      };
+      if (t.style === 'swiss') config.accent = t.accent;
+      if (t.style === 'editorial') config.theme = t.theme;
+      modalConfig.textContent = JSON.stringify(config, null, 2);
+      modal.classList.add('show');
+    });
+
+    document.getElementById('btnClose').addEventListener('click', () => modal.classList.remove('show'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderCards(btn.dataset.filter);
+      });
+    });
+
+    // Initial render
+    renderCards('all');
+  </script>
+</body>
+</html>
