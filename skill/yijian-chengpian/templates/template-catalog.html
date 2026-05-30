@@ -65,7 +65,7 @@
 <div class="section-title">⚠️ 可以接，但需要你提供图片（5 个品类）</div>
 <div class="grid" id="grid-limited"></div>
 
-<div class="section-title">🚫 不接（明确告知，建议用其他工具）</div>
+<div class="section-title">🚫 不适合（建议用其他工具）</div>
 <div class="grid" id="grid-refused"></div>
 
 <div class="modal-overlay" id="modal">
@@ -143,7 +143,7 @@ const CATEGORIES = [
     img:"用户穿搭照(必须)。不生成人像。不超6件单品。",
     tier:"limited", limitNote:"OOTD全身照不是我们的能力范围。可做单品推荐清单。" },
 
-  // === 明确不接 ===
+  // === 不适合 ===
   { id:"refused-fan", name:"追星 / 粉丝向", sub:"需要饭圈美学体系", tier:"refused", refuseNote:"视觉语言完全不同，建议找专门的粉丝内容工具。" },
   { id:"refused-ad", name:"纯促销硬广", sub:"违背内容性设计哲学", tier:"refused", refuseNote:"硬广视觉效果不是我们的方向，出来的东西会像模板套的。" },
   { id:"refused-ootd", name:"OOTD 日常穿搭", sub:"无法生成人像照片", tier:"refused", refuseNote:"我们不出人像。单品推荐清单可以做。" },
@@ -162,7 +162,7 @@ function renderCards(filter) {
 
     let html = '';
     if (c.tier === 'refused') {
-      html = `<h3>${c.name}</h3><div class="sub">${c.sub}</div><p class="refuse-tag">不接 — ${c.refuseNote}</p>`;
+      html = `<h3>${c.name}</h3><div class="sub">${c.sub}</div><p class="refuse-tag">不适合 — ${c.refuseNote}</p>`;
     } else {
       const styleBadge = c.style==='swiss' ? '<span class="badge swiss">Swiss 网格</span>' : '<span class="badge editorial">Editorial 杂志</span>';
       const recipeFlow = c.recipes.map((r,i) => {
