@@ -32,7 +32,7 @@ Test-Path "$env:USERPROFILE\Projects\yijian-chengpian"
 
 1. **工作区路径** — 默认 `C:\Users\<用户名>\Projects\yijian-chengpian`，用默认还是自定义？
 2. **安装方式** — A（全局 symlink，需管理员）还是 B（项目内自包含，推荐）？
-3. **ElevenLabs API 密钥** — 已有直接输入，没有就去 https://elevenlabs.io/app/settings/api-keys 获取
+3. **TTS 配音** — Edge-TTS（免费，`pip install edge-tts`，无需 API Key）
 
 确认后按 `references/setup.md` 执行 6 阶段搭建：
 
@@ -41,7 +41,7 @@ Test-Path "$env:USERPROFILE\Projects\yijian-chengpian"
 | 1 | 系统依赖检查（FFmpeg、Python、Node.js、Git、yt-dlp） |
 | 2 | 克隆 video-use |
 | 3 | 初始化 Hyperframes 模板 |
-| 4 | 配置 ElevenLabs（`.env` + `.gitignore`） |
+| 4 | 安装 Edge-TTS（`pip install edge-tts`，免费无需 Key） |
 | 5 | 创建项目目录树 |
 | 6 | 生成工作区 CLAUDE.md |
 
@@ -100,7 +100,7 @@ C. 教学 — AI 自动生成画面 + 配音的教学视频
 |------|---------|------|------|
 | **A 图文** | dbs-content 扩写 → guizang-social-card-skill 做卡片 | 小红书轮播图 / 公众号封面 | → 路径A |
 | **B 口播** | video-use（剪辑+字幕+配乐）→ guizang-social-card-skill（封面） | 口播短视频 + 封面 | → 路径B |
-| **C 教学** | ElevenLabs配音 → Hyperframes（画面+字幕+配乐）→ FFmpeg导出 → guizang-social-card-skill（封面） | AI教学视频 + 封面 | → 路径C |
+| **C 教学** | Edge-TTS配音 → Hyperframes（画面+字幕+配乐）→ FFmpeg导出 → guizang-social-card-skill（封面） | AI教学视频 + 封面 | → 路径C |
 
 用户也可能直接指定：
 - 「做一期小红书图文」→ 自动走路径 A
@@ -171,6 +171,6 @@ Q2: 什么感觉？ A干净专业 B温暖亲切 C高级冷淡 D帮我推荐
 
 ## 安全规则
 
-- ElevenLabs API 密钥**只能**写入 `.env`，绝不进入仓库
+- Edge-TTS 完全免费，无需 API Key。如后续接入付费 TTS，密钥**只能**写入 `.env`
 - `.env` 必须在 `.gitignore` 中
 - 生成脚本时不写入任何真实凭证

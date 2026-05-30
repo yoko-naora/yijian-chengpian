@@ -16,7 +16,7 @@ AI自動教學影片生產工作流。選題→質檢→脚本→配音→模板
          内容类型分支
          ├─ A 图文 → dbs-content + guizang-social-card-skill
          ├─ B 口播 → video-use + guizang-social-card-skill
-         └─ C 教学 → ElevenLabs + Hyperframes + FFmpeg → guizang-social-card-skill
+         └─ C 教学 → Edge-TTS + Hyperframes + FFmpeg → guizang-social-card-skill
               ↓
          Step 6: social-media-auto-publish 多平台分发
 ```
@@ -69,7 +69,7 @@ AI自動教學影片生產工作流。選題→質檢→脚本→配音→模板
 
 ## Next Actions (優先順)
 
-1. **路徑 C 視頻質量修復** — ElevenLabs 換中文原生音色（非 Rachel）+ Hyperframes 真動畫（非靜態幀）
+1. **路徑 C 視頻質量修復** — ✅ 配音已換 Edge-TTS（免費中文原生）+ Hyperframes 真動畫（非靜態幀）
 2. **TikTok 平台接入 sau** — 按 skill pattern 加入 TikTok CLI
 
 ## Key Links

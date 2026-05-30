@@ -216,27 +216,29 @@
 
 ---
 
-## 9. ElevenLabs — 配音 API
+## 9. Edge-TTS — 配音
 
-**调用方式**：Python SDK `elevenlabs` | **类型**：外部 API
-**版本**：`eleven_multilingual_v2` 模型 | **检查方式**：https://elevenlabs.io/docs/api-reference/versions
+**调用方式**：Python `edge-tts`（`pip install edge-tts`） | **类型**：免费工具
+**版本**：最新（`pip install --upgrade edge-tts`） | **检查方式**：`pip show edge-tts`
 **我们的调用位置**：Path C.2
+**切换日期**：2026-05-30（从 ElevenLabs 切换，中文质量差）
 
 ### 功能清单
 
 | 功能 | 使用 | 备注 |
 |------|:--:|------|
-| 文字转语音 | ✅ | `eleven_multilingual_v2` 模型 |
-| 英文音色 Rachel | ⚠️ | **中文不自然，需要换中文原生音色** |
-| 语速控制 | ✅ | 教学视频 0.9 |
-| 多语言 | ❌ | 只用中文 |
-| 声音克隆 | ❌ | 不需要 |
+| 文字转语音 | ✅ | `zh-CN-XiaoxiaoNeural` 默认 |
+| 50+ 中文音色 | ⚠️ | 只用 Xiaoxiao（女声）和 Xiaoyi（活泼女声） |
+| SSML 精细控制 | ⚠️ | 语速/音调/情感/停顿，规则已写 |
+| 8 种情感风格 | ❌ | 教学视频不需要，短视频可能用得上 |
+| 免费 | ✅ | 无需 API Key，无需注册 |
 
 ### 可接的
 
 | 功能 | 怎么接 | 优先级 |
 |------|--------|:--:|
-| 换中文原生音色 | 调研 ElevenLabs 中文音色库，替换 Rachel | **高（Path C 最大质量问题）** |
+| 口播用 XiaoyiNeural | Path B 配音时自动切换 | 中 |
+| 情感控制 | 口播视频加 `cheerful` 或 `excited` 风格 | 低 |
 
 ---
 
@@ -271,7 +273,7 @@
 
 | 优先级 | 功能 | 所属 Skill | 影响 |
 |:--:|------|-----------|------|
-| 🔴 高 | 中文原生音色 | ElevenLabs | Path C 配音质量 |
+| ✅ 已解决 | 中文原生音色 | Edge-TTS（2026-05-30 切换） | Path C 配音质量 |
 | 🔴 高 | GSAP 真动画 | Hyperframes | Path C 画面质量 |
 | 🟡 中 | 图库自动搜图（端到端） | guizang-social-card-skill | 卡片真实感 |
 | 🟡 中 | 文字压图 3 步法（端到端） | guizang-social-card-skill | 封面质量 |

@@ -8,7 +8,7 @@
 
 ## If you accidentally expose a key
 
-1. Rotate the key immediately (ElevenLabs, Stripe, etc.)
+1. Rotate the key immediately (Stripe, etc.)
 2. Revoke the old key
 3. Check git history — if the key was committed, rewrite history or rotate regardless
 
